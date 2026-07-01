@@ -11,7 +11,7 @@ backend:
   repo: ecoemardini/bioland-cy-website
   branch: main
   base_url: https://bioland-cy-website.pages.dev   # where the OAuth functions live
-  auth_endpoint: /api/auth                         # Cloudflare Pages Function
+  auth_endpoint: /api/login                        # Cloudflare Pages Function (302, no-cache)
 
 media_folder: "images"     # uploaded images + PDFs are stored here in the repo
 public_folder: "/images"   # ...and served from this URL path
