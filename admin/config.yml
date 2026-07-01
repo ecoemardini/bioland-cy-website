@@ -8,8 +8,10 @@
 
 backend:
   name: github
-  repo: ecoemardini/bioland-cy-website   # <-- set this after you create the repo
+  repo: ecoemardini/bioland-cy-website
   branch: main
+  base_url: https://bioland-cy-website.pages.dev   # where the OAuth functions live
+  auth_endpoint: /api/auth                         # Cloudflare Pages Function
 
 media_folder: "images"     # uploaded images + PDFs are stored here in the repo
 public_folder: "/images"   # ...and served from this URL path
