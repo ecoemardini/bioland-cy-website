@@ -1,0 +1,23 @@
+{
+  "items": [
+    { "code": "D1.1", "title": "Project Management Plan", "wp": "WP1", "due_month": "M1", "status": "In progress", "pdf": "", "doi": "" },
+    { "code": "D1.2", "title": "Data Management Plan", "wp": "WP1", "due_month": "M6", "status": "In progress", "pdf": "", "doi": "" },
+    { "code": "D1.3", "title": "Mid-Term Progress Report", "wp": "WP1", "due_month": "M12", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D1.4", "title": "Final Technical and Financial Report", "wp": "WP1", "due_month": "M24", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D2.1", "title": "BIOLAND Communication Kit", "wp": "WP2", "due_month": "M3", "status": "In progress", "pdf": "", "doi": "" },
+    { "code": "D2.2", "title": "Project Website and Social Media Channels", "wp": "WP2", "due_month": "M3", "status": "In progress", "pdf": "", "doi": "" },
+    { "code": "D2.3", "title": "KTO Submission Request", "wp": "WP2", "due_month": "M13", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D2.4", "title": "Peer-Reviewed Publications and Conference Papers", "wp": "WP2", "due_month": "M24", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D2.5", "title": "Public Workshop Report and Materials", "wp": "WP2", "due_month": "M24", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D3.1", "title": "Environmental Baseline Dataset", "wp": "WP3", "due_month": "M6", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D3.2", "title": "Harmonized Isotope and Bioarchaeological Dataset", "wp": "WP3", "due_month": "M12", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D3.3", "title": "Resource Accessibility Index (RAI)", "wp": "WP3", "due_month": "M16", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D4.1", "title": "Preprocessed Terrain-SAR-Archaeological Dataset", "wp": "WP4", "due_month": "M14", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D4.2", "title": "Cost-Surface and Mobility Model Outputs", "wp": "WP4", "due_month": "M18", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D4.3", "title": "SAR Coherence Analysis and Stability Maps", "wp": "WP4", "due_month": "M18", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D4.4", "title": "Activity Index", "wp": "WP4", "due_month": "M20", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D5.1", "title": "Harmonised Geodatabase and Metadata Package", "wp": "WP5", "due_month": "M20", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D5.2", "title": "BIOLAND GeoHub", "wp": "WP5", "due_month": "M24", "status": "Planned", "pdf": "", "doi": "" },
+    { "code": "D5.3", "title": "User Documentation and Workflow Guide", "wp": "WP5", "due_month": "M24", "status": "Planned", "pdf": "", "doi": "" }
+  ]
+}

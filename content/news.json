@@ -1,0 +1,22 @@
+{
+  "posts": [
+    {
+      "title": "BIOLAND-Cy project kicks off",
+      "date": "2026-07-01",
+      "summary": "The BIOLAND-Cy project formally begins at the Eratosthenes Centre of Excellence, linking Earth Observation with bioarchaeology across Cyprus.",
+      "image": ""
+    },
+    {
+      "title": "How NDVI helps us read ancient land use",
+      "date": "2026-07-15",
+      "summary": "The first in a series of method explainers — turning modern satellite vegetation data into a window on the ancient Cypriot landscape.",
+      "image": ""
+    },
+    {
+      "title": "Six sites, one framework",
+      "date": "2026-08-01",
+      "summary": "From Khirokitia to Hala Sultan Tekke — meet the six Tier 1 sites driving the project's diet and resource indexing.",
+      "image": ""
+    }
+  ]
+}
