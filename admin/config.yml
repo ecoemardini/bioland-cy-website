@@ -1,0 +1,110 @@
+# ===================================================================
+# Decap CMS configuration — BIOLAND-Cy website
+# The /admin login panel lets you edit News, Deliverables and Events
+# from any browser. On Save it commits to GitHub and Cloudflare Pages
+# republishes (~1 min). It writes the SAME json files the site reads,
+# so there is NO build step to maintain.
+# ===================================================================
+
+backend:
+  name: github
+  repo: ecoemardini/bioland-cy-website   # <-- set this after you create the repo
+  branch: main
+
+media_folder: "images"     # uploaded images + PDFs are stored here in the repo
+public_folder: "/images"   # ...and served from this URL path
+
+site_url: https://bioland-cy.eratosthenes.org.cy
+display_url: https://bioland-cy.eratosthenes.org.cy
+
+collections:
+  # ---- NEWS (list of posts stored in one json file) ----
+  - name: "news"
+    label: "News / Blog posts"
+    files:
+      - name: "news_list"
+        label: "All news posts"
+        file: "content/news.json"
+        format: "json"
+        fields:
+          - label: "Posts"
+            name: "posts"          # NOTE: site reads the array directly; see build note in guide
+            widget: "list"
+            label_singular: "Post"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Summary (1–2 sentences)", name: "summary", widget: "text" }
+              - { label: "Cover image", name: "image", widget: "image", required: false }
+              - { label: "Full text", name: "body", widget: "markdown", required: false }
+              - { label: "Social embed (paste LinkedIn/Instagram embed code, optional)", name: "embed_html", widget: "text", required: false }
+
+  # ---- DELIVERABLES ----
+  - name: "deliverables"
+    label: "Deliverables"
+    files:
+      - name: "deliverables_list"
+        label: "All deliverables"
+        file: "content/deliverables.json"
+        format: "json"
+        fields:
+          - label: "Deliverables"
+            name: "items"
+            widget: "list"
+            label_singular: "Deliverable"
+            summary: "{{fields.code}} — {{fields.title}} ({{fields.status}})"
+            fields:
+              - { label: "Code (e.g. D2.2)", name: "code", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Work Package", name: "wp", widget: "select", options: ["WP1","WP2","WP3","WP4","WP5"] }
+              - { label: "Due month (e.g. M3)", name: "due_month", widget: "string" }
+              - { label: "Status", name: "status", widget: "select", options: ["Planned","In progress","Submitted","Public"], default: "Planned" }
+              - { label: "Public PDF (upload)", name: "pdf", widget: "file", required: false }
+              - { label: "DOI / Zenodo link", name: "doi", widget: "string", required: false }
+
+  # ---- EVENTS ----
+  - name: "events"
+    label: "Events"
+    files:
+      - name: "events_list"
+        label: "All events"
+        file: "content/events.json"
+        format: "json"
+        fields:
+          - label: "Events"
+            name: "items"
+            widget: "list"
+            label_singular: "Event"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Time", name: "time", widget: "string", required: false }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Status", name: "status", widget: "select", options: ["Upcoming","Past"], default: "Upcoming" }
+              - { label: "Registration link", name: "register", widget: "string", required: false }
+              - { label: "Materials (PDF, after event)", name: "materials", widget: "file", required: false }
+
+  # ---- WORKSHOPS (open as a full article with pictures) ----
+  - name: "workshops"
+    label: "Workshops"
+    files:
+      - name: "workshops_list"
+        label: "All workshops"
+        file: "content/workshops.json"
+        format: "json"
+        fields:
+          - label: "Workshops"
+            name: "items"
+            widget: "list"
+            label_singular: "Workshop"
+            summary: "{{fields.date}} — {{fields.title}}"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Cover image", name: "image", widget: "image", required: false }
+              - { label: "Full article (text + images)", name: "body", widget: "markdown", required: false }
+              - { label: "Registration link", name: "register", widget: "string", required: false }
+              - { label: "Materials (PDF, after event)", name: "materials", widget: "file", required: false }
