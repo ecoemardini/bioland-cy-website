@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIOLAND-Cy | Bioarchaeology and Integrated Observation for LANdscape Dynamics in Cyprus</title>
+<meta name="description" content="BIOLAND-Cy links Earth Observation with published bioarchaeological evidence to reconstruct ancient Cypriot landscapes. RIF-funded research at the Eratosthenes Centre of Excellence.">
+<link rel="icon" type="image/svg+xml" href="images/emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#557682;--sky:#95CAEA;--navy:#324E98;--navy-d:#243a73;--ochre:#CE8C22;--paper:#F7F6F3;
+    --ink:#1d2935;--muted:#5c6b73;--line:#dbe4ec;--teal-d:#43606a;--maxw:1180px;--bg:#e9f1f7;--card:#ffffff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Open Sans',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.65;font-size:16.5px}
+  h1,h2,h3,h4{font-family:'Montserrat',Arial,sans-serif;color:var(--navy);line-height:1.18;font-weight:700}
+  a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px}
+  .btn{display:inline-block;background:var(--ochre);color:#fff;padding:13px 28px;border-radius:8px;font-family:'Montserrat';font-weight:700;font-size:14px;border:2px solid var(--ochre);cursor:pointer;transition:.18s;letter-spacing:.3px}
+  .btn:hover{background:#b87b1a;border-color:#b87b1a;text-decoration:none;transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--navy);border-color:var(--navy)}
+  .btn.ghost:hover{background:var(--navy);color:#fff}
+
+  /* header */
+  header{background:rgba(233,241,247,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:150px}
+  .brand{display:flex;align-items:center;cursor:pointer}
+  .brand img{height:130px;width:auto;display:block}
+  .menu{display:flex;gap:0;list-style:none}
+  .menu a{font-family:'Montserrat';font-weight:600;font-size:13px;color:var(--ink);padding:9px 11px;border-radius:8px;cursor:pointer;letter-spacing:.1px;white-space:nowrap}
+  .menu a:hover{background:var(--paper);color:var(--teal);text-decoration:none}
+  .menu a.active{color:var(--ochre)}
+  .burger{display:none;background:none;border:none;cursor:pointer;font-size:26px;color:var(--navy)}
+
+  /* hero */
+  .hero{position:relative;color:#fff;overflow:hidden;background:linear-gradient(160deg,var(--navy-d) 0%,var(--navy) 46%,#3d5e7a 100%)}
+  .hero::before{content:"";position:absolute;inset:0;opacity:.13;background-image:linear-gradient(rgba(255,255,255,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.7) 1px,transparent 1px);background-size:52px 52px}
+  .heroGrid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;padding:74px 0 86px}
+  .hero .tag{display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);padding:7px 16px;border-radius:30px;font-family:'Montserrat';font-weight:600;font-size:12.5px;letter-spacing:1px;margin-bottom:24px}
+  .hero h1{color:#fff;font-size:50px;font-weight:800;margin-bottom:18px;letter-spacing:-.5px}
+  .hero h1 .hl{color:var(--sky)}
+  .hero p.lead{font-size:19px;max-width:560px;margin-bottom:30px;color:#dbe8f6}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap}
+  .hero .btn.ghost{color:#fff;border-color:rgba(255,255,255,.7)}
+  .hero .btn.ghost:hover{background:#fff;color:var(--navy)}
+  .heroArt{position:relative}
+  .heroIsland{width:100%;height:auto;filter:drop-shadow(0 18px 40px rgba(0,0,0,.35))}
+  .scanline{animation:scan 7s linear infinite}
+  @keyframes scan{0%{transform:translateX(-40px);opacity:0}6%{opacity:1}94%{opacity:1}100%{transform:translateX(460px);opacity:0}}
+  .heroCaption{margin-top:14px;text-align:center;font-family:'Montserrat';font-weight:600;font-size:11.5px;letter-spacing:2.4px;color:var(--sky)}
+
+  /* stat band overlapping hero */
+  .statBand{position:relative;z-index:3;margin-top:-44px}
+  .stat{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .stat .s{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 18px;text-align:center;box-shadow:0 12px 34px rgba(30,46,90,.10)}
+  .stat .s b{display:block;font-family:'Montserrat';font-size:34px;color:var(--navy);font-weight:800;line-height:1.1}
+  .stat .s span{font-size:13px;color:var(--muted)}
+  .stat .s i{display:block;width:34px;height:3px;border-radius:2px;background:var(--ochre);margin:10px auto 0;font-style:normal}
+
+  /* sections */
+  section.page{display:none;padding:64px 0;animation:fade .3s ease}
+  section.page.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .eyebrow{font-family:'Montserrat';font-weight:700;font-size:12.5px;letter-spacing:2.6px;text-transform:uppercase;color:var(--ochre);margin-bottom:10px}
+  h2.sec{font-size:34px;margin-bottom:18px;letter-spacing:-.3px}
+  h3{font-size:21px;margin:28px 0 10px}
+  p{margin-bottom:14px;color:#33424c}
+  .lede{font-size:18.5px;color:var(--muted);max-width:840px}
+  .grid{display:grid;gap:24px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+  .card{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:12px;padding:28px;transition:.18s}
+  .card:hover{box-shadow:0 14px 34px rgba(50,78,152,.12);transform:translateY(-4px);border-top-color:var(--ochre)}
+  .card .ic{height:46px;display:flex;align-items:center;margin-bottom:14px;color:var(--teal)}
+  .card h3{margin-top:0;font-size:18px}.card p{font-size:14.5px;margin-bottom:0}
+  .altband{background:#dfeaf2;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:54px 0;margin:54px 0 8px}
+
+  .pill{display:inline-block;font-family:'Montserrat';font-weight:600;font-size:11px;padding:3px 11px;border-radius:20px;letter-spacing:.3px}
+  .pill.done{background:#e1f0e6;color:#2e7d4f}.pill.prog{background:#fdf0d8;color:#a9710d}.pill.plan{background:#eceff4;color:#5a6b86}
+  table.t{width:100%;border-collapse:collapse;margin:18px 0;font-size:14.5px;background:var(--card);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+  table.t th{background:var(--navy);color:#fff;text-align:left;padding:12px 15px;font-family:'Montserrat';font-weight:600;font-size:13px;letter-spacing:.3px}
+  table.t td{padding:12px 15px;border-top:1px solid var(--line)}
+  table.t tr:nth-child(even) td{background:#fafaf8}
+
+  /* WP flow */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:26px;position:relative}
+  .flow .step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px;margin-right:26px}
+  .flow .step:last-child{margin-right:0}
+  .flow .step::after{content:"→";position:absolute;right:-23px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--ochre);font-weight:700}
+  .flow .step:last-child::after{content:""}
+  .flow .num{font-family:'Montserrat';font-weight:800;font-size:13px;color:#fff;background:var(--teal);border-radius:20px;padding:3px 12px;display:inline-block;margin-bottom:12px;letter-spacing:1px}
+  .flow h3{margin-top:0;font-size:17.5px}.flow p{font-size:14px;margin:0}
+
+  .team{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .member{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:center;transition:.18s}
+  .member:hover{box-shadow:0 12px 30px rgba(50,78,152,.10)}
+  .member .ph{height:120px;background:linear-gradient(145deg,var(--navy),var(--teal));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Montserrat';font-weight:800;font-size:30px;letter-spacing:1px}
+  .member .b{padding:18px}.member h3{margin:0 0 4px;font-size:17px}
+  .member .role{font-size:12.5px;color:var(--ochre);font-family:'Montserrat';font-weight:700;margin-bottom:8px;letter-spacing:.4px}.member p{font-size:13px;margin:0}
+
+  .news{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .post{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:.18s}
+  .post:hover{box-shadow:0 12px 30px rgba(50,78,152,.10);transform:translateY(-3px)}
+  .post .img{height:140px;background:linear-gradient(135deg,var(--sky),var(--teal));background-size:cover;background-position:center}
+  .post .b{padding:20px;flex:1}.post .date{font-size:11.5px;color:var(--ochre);font-family:'Montserrat';font-weight:700;text-transform:uppercase;letter-spacing:1.4px}
+  .post h3{font-size:17px;margin:7px 0 8px}.post p{font-size:14px;margin:0}
+
+  .contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:34px;align-items:start}
+  .field{margin-bottom:14px}.field label{display:block;font-family:'Montserrat';font-weight:600;font-size:13px;margin-bottom:5px;color:var(--navy)}
+  .field input,.field textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:14px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:26px}
+  .partners{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px}
+  .partners span{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 16px;font-size:13px;font-family:'Montserrat';font-weight:600;color:var(--navy)}
+
+  footer{background:var(--navy-d);color:#cdd8ee;margin-top:64px;padding:40px 0 22px;font-size:14px}
+  footer h4{color:#fff;font-size:15px;margin-bottom:12px}
+  .fgrid{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:34px;align-items:start}
+  footer a{color:#cdd8ee}footer a:hover{color:#fff}
+  .fundrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:18px}
+  .fundchip{flex:0 0 auto;width:208px;height:104px;display:flex;align-items:center;justify-content:center;background:#eef2f7;border-radius:10px;padding:14px 20px}
+  .fundchip img{max-height:76px;max-width:100%;width:auto;height:auto;display:block;object-fit:contain}
+  .embf{display:inline-block;background:#eef2f7;border-radius:10px;padding:12px 18px;font-family:'Montserrat';font-weight:700;font-size:12px;letter-spacing:.3px;color:var(--navy)}
+  .fundstmt{color:#aeb9d6;font-size:11.5px;line-height:1.5;margin-top:14px;max-width:600px}
+  .copy{border-top:1px solid rgba(255,255,255,.12);margin-top:24px;padding-top:16px;text-align:center;font-size:11.5px;color:#9fb0d4}
+  .muted-note{color:var(--muted);font-size:14px}
+
+
+  /* Tier-1 site tiles (Forty-style) */
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
+  .tile{position:relative;border-radius:12px;overflow:hidden;min-height:170px;display:flex;align-items:flex-end;padding:22px;color:#fff;cursor:pointer;transition:.2s;background-size:cover;background-position:center}
+  .tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,32,64,0) 30%,rgba(20,32,64,.82));transition:.2s}
+  .tile:hover{transform:translateY(-4px)}
+  .tile:hover::before{background:linear-gradient(180deg,rgba(20,32,64,.15) 0%,rgba(20,32,64,.9))}
+  .tile>div{position:relative;z-index:2}
+  .tile h3{color:#fff;margin:0 0 3px;font-size:17px}
+  .tile span{font-size:12px;color:#cfe2f3;font-family:'Montserrat';font-weight:600;letter-spacing:.6px;text-transform:uppercase}
+  .t1{background-image:linear-gradient(135deg,#557682,#324E98)}
+  .t2{background-image:linear-gradient(135deg,#CE8C22,#8a5c14)}
+  .t3{background-image:linear-gradient(135deg,#95CAEA,#557682)}
+  .t4{background-image:linear-gradient(135deg,#324E98,#243a73)}
+  .t5{background-image:linear-gradient(135deg,#7fa3b0,#43606a)}
+  .t6{background-image:linear-gradient(135deg,#dba84e,#CE8C22)}
+  @media(max-width:920px){.tiles{grid-template-columns:1fr 1fr}}
+  @media(max-width:560px){.tiles{grid-template-columns:1fr}}
+
+  /* Work Packages page */
+  .wpblock{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:12px;padding:24px 26px;margin:18px 0}
+  .wpblock h3{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:10px}
+  .wptag{display:inline-block;color:#fff;font-family:'Montserrat';font-weight:800;font-size:12px;letter-spacing:.5px;padding:3px 10px;border-radius:6px}
+  .wptag.wp1{background:#324E98}.wptag.wp2{background:#557682}.wptag.wp3{background:#CE8C22}.wptag.wp4{background:#243a73}.wptag.wp5{background:#43606a}
+  .dlist{list-style:none;margin:14px 0 0;padding:0}
+  .dlist li{position:relative;padding:9px 0 9px 22px;border-top:1px solid var(--line);font-size:14.5px;color:#33424c}
+  .dlist li:first-child{border-top:none}
+  .dlist li::before{content:"";position:absolute;left:2px;top:16px;width:7px;height:7px;border-radius:2px;background:var(--ochre)}
+  .dlbtn{display:inline-block;margin-left:8px;font-family:'Montserrat';font-weight:700;font-size:12px;color:#fff;background:var(--ochre);padding:2px 10px;border-radius:6px}
+  .dlbtn:hover{background:#b87b1a;text-decoration:none}
+
+  /* Article modal (news + workshops open as full article) */
+  .artBack{display:none;position:fixed;inset:0;background:rgba(20,32,64,.62);z-index:200;padding:40px 18px;overflow-y:auto}
+  .artBack.open{display:block}
+  .artModal{max-width:760px;margin:0 auto;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4);animation:fade .25s ease}
+  .artModal .cover{height:230px;background:linear-gradient(135deg,var(--sky),var(--teal));background-size:cover;background-position:center}
+  .artModal .ab{padding:30px 34px 38px}
+  .artModal .meta{font-family:'Montserrat';font-weight:700;font-size:12px;color:var(--ochre);text-transform:uppercase;letter-spacing:1.3px;margin-bottom:8px}
+  .artModal h2{font-size:27px;margin-bottom:14px}
+  .artModal .body{font-size:15.5px;color:#33424c;line-height:1.7}
+  .artModal .body p{margin-bottom:13px}.artModal .body img{max-width:100%;border-radius:8px;margin:12px 0}
+  .artModal .body h3{font-size:19px;margin:20px 0 8px}.artModal .body ul,.artModal .body ol{margin:0 0 14px 22px}
+  .artClose{position:sticky;top:14px;float:right;margin:14px 14px 0 0;background:#fff;border:1px solid var(--line);border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;color:var(--navy);z-index:3;line-height:1}
+  .readmore{display:inline-block;margin-top:10px;font-family:'Montserrat';font-weight:700;font-size:13px;color:var(--teal);cursor:pointer}
+  @media(max-width:920px){
+    .heroGrid{grid-template-columns:1fr;padding:54px 0 70px}
+    .hero h1{font-size:36px}
+    .menu{position:fixed;top:150px;right:0;left:0;background:#fff;flex-direction:column;gap:0;border-bottom:1px solid var(--line);box-shadow:0 8px 20px rgba(0,0,0,.08);max-height:0;overflow:hidden;transition:.25s}
+    .menu.open{max-height:560px}.menu a{padding:14px 26px;border-radius:0;border-top:1px solid var(--line)}
+    .burger{display:block}.g3,.g2,.team,.news,.flow{grid-template-columns:1fr}
+    .flow .step{margin-right:0;margin-bottom:26px}.flow .step::after{content:"↓";right:auto;left:50%;top:auto;bottom:-24px;transform:translateX(-50%)}
+    .stat{grid-template-columns:repeat(2,1fr)}
+    .contact-grid,.fgrid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand" onclick="go('home')" aria-label="BIOLAND-Cy home">
+      <img src="images/logo.svg" alt="BIOLAND-Cy — Earth Observation · Bioarchaeology · Cyprus">
+    </div>
+    <button class="burger" onclick="document.getElementById('menu').classList.toggle('open')" aria-label="Menu">☰</button>
+    <ul class="menu" id="menu">
+      <li><a onclick="go('home')" data-p="home" class="active">Home</a></li>
+      <li><a onclick="go('about')" data-p="about">About</a></li>
+      <li><a onclick="go('research')" data-p="research">Research</a></li>
+      <li><a onclick="go('workpackages')" data-p="workpackages">Work Packages</a></li>
+      <li><a onclick="go('news')" data-p="news">News</a></li>
+      <li><a onclick="go('events')" data-p="events">Events &amp; Workshops</a></li>
+      <li><a onclick="go('contact')" data-p="contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- HOME -->
+<section class="page active" id="home">
+  <div class="hero">
+    <div class="wrap heroGrid">
+      <div>
+        <span class="tag">RIF EXCELLENCE/0925/0163 · ERATOSTHENES CENTRE OF EXCELLENCE</span>
+        <h1>Reading ancient Cyprus <span class="hl">from orbit</span></h1>
+        <p class="lead">BIOLAND-Cy links satellite Earth Observation with already-published bioarchaeological evidence — human remains, isotopes, animal bones, plants — to reconstruct how people lived in the ancient Cypriot landscape. No new excavation. No new sampling. Open science from open evidence.</p>
+        <div class="cta"><a class="btn" onclick="go('research')">Explore the research</a><a class="btn ghost" onclick="go('about')">About the project</a></div>
+      </div>
+      <div class="heroArt">
+        <svg viewBox="0 0 436 306" xmlns="http://www.w3.org/2000/svg" class="heroIsland" role="img" aria-label="Raster map of Cyprus with three bioarchaeology site markers">
+  <rect x="413" y="10" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="387" y="23" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="400" y="23" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="413" y="23" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="361" y="36" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="374" y="36" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="387" y="36" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="348" y="49" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="361" y="49" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="374" y="49" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="322" y="62" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="335" y="62" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="348" y="62" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="361" y="62" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="283" y="75" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="296" y="75" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="309" y="75" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="322" y="75" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="335" y="75" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="88" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="88" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="153" y="88" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="270" y="88" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="283" y="88" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="296" y="88" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="309" y="88" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="322" y="88" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="335" y="88" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="101" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="101" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="179" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="192" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="205" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="218" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="231" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="244" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="257" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="270" y="101" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="283" y="101" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="296" y="101" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="309" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="322" y="101" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="114" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="153" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="166" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="179" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="192" y="114" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="114" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="218" y="114" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="114" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="244" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="114" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="270" y="114" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="283" y="114" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="296" y="114" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="127" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="127" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="127" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="127" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="179" y="127" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="192" y="127" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="205" y="127" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="218" y="127" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="231" y="127" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="244" y="127" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="127" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="270" y="127" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="283" y="127" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="296" y="127" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="62" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="75" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="88" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="101" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="114" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="140" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="153" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="140" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="179" y="140" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="192" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="218" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="140" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="244" y="140" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="140" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="270" y="140" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="283" y="140" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="296" y="140" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="49" y="153" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="62" y="153" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="75" y="153" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="88" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="101" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="114" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="153" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="153" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="179" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="192" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="218" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="153" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="244" y="153" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="153" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="270" y="153" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="283" y="153" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="296" y="153" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="309" y="153" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="10" y="166" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="23" y="166" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="36" y="166" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="49" y="166" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="62" y="166" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="75" y="166" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="88" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="101" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="114" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="166" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="179" y="166" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="192" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="166" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="218" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="166" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="244" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="257" y="166" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="270" y="166" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="283" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="296" y="166" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="309" y="166" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="322" y="166" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="10" y="179" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="23" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="36" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="49" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="62" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="75" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="88" y="179" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="101" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="114" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="179" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="192" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="179" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="218" y="179" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="244" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="270" y="179" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="283" y="179" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="296" y="179" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="309" y="179" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="322" y="179" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="23" y="192" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="36" y="192" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="49" y="192" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="62" y="192" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="75" y="192" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="88" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="101" y="192" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="114" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="192" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="179" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="192" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="218" y="192" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="192" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="244" y="192" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="257" y="192" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="296" y="192" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="23" y="205" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="36" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="49" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="62" y="205" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="75" y="205" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="88" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="101" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="114" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="205" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="153" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="179" y="205" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="192" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="205" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="218" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="231" y="205" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="244" y="205" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="36" y="218" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="49" y="218" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="62" y="218" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="75" y="218" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="88" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="101" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="114" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="218" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="140" y="218" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="153" y="218" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="166" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="179" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="192" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="218" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="218" y="218" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="231" y="218" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="244" y="218" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="36" y="231" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="49" y="231" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="62" y="231" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="75" y="231" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="88" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="101" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="114" y="231" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="127" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="140" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="153" y="231" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="166" y="231" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="179" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="192" y="231" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="205" y="231" width="11.4" height="11.4" rx="1.8" fill="#557682" opacity="0.92"/><rect x="218" y="231" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="231" y="231" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="49" y="244" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="62" y="244" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="75" y="244" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="88" y="244" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="101" y="244" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="114" y="244" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="127" y="244" width="11.4" height="11.4" rx="1.8" fill="#dba84e" opacity="0.92"/><rect x="140" y="244" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="153" y="244" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="166" y="244" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="179" y="244" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="192" y="244" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="205" y="244" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="62" y="257" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="75" y="257" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="88" y="257" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="101" y="257" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="114" y="257" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="257" width="11.4" height="11.4" rx="1.8" fill="#7fa3b0" opacity="0.92"/><rect x="140" y="257" width="11.4" height="11.4" rx="1.8" fill="#CE8C22" opacity="0.92"/><rect x="153" y="257" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="88" y="270" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="270" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="270" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="127" y="283" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/><rect x="140" y="283" width="11.4" height="11.4" rx="1.8" fill="#95CAEA" opacity="0.92"/>
+  <g class="scanline"><rect x="0" y="0" width="5" height="306" fill="#ffffff" opacity="0.55"/><rect x="5" y="0" width="26" height="306" fill="#ffffff" opacity="0.12"/></g>
+  <circle cx="210.7" cy="236.7" r="26" fill="#F7F6F3" stroke="#fff" stroke-width="2.4"/>
+    <g transform="translate(192.29999999999998,218.29999999999998) scale(0.7666)"><path d="M12.9693 7.55747C10.3617 9.822 9 12.9793 9 16.5C9 19.9313 9.79883 22.0837 10.6056 23.6972C10.7892 24.0644 10.9724 24.4022 11.1375 24.7065L11.1717 24.7696C11.349 25.0966 11.5003 25.3782 11.6275 25.6468C11.8792 26.1781 12 26.5857 12 27V30.9992C12 31.5515 12.4477 32 13 32L13.0157 32C13.0295 32.5428 13.0556 33.2704 13.1047 34.0863C13.2082 35.8049 13.4178 37.9883 13.8559 39.6552C14.0237 40.2938 14.4243 40.8384 14.9753 41.1919C16.2644 42.0189 19.7777 44 24 44C28.2223 44 31.7356 42.0189 33.0247 41.1919C33.5757 40.8384 33.9763 40.2938 34.1441 39.6552C34.5822 37.9883 34.7918 35.8049 34.8953 34.0863C34.9444 33.2704 34.9705 32.5428 34.9843 32C34.9895 32 34.9948 32 35 32C35.5523 32 36 31.5523 36 31V27C36 26.5857 36.1208 26.1781 36.3725 25.6468C36.4997 25.3782 36.651 25.0966 36.8283 24.7696L36.8625 24.7065C37.0276 24.4022 37.2109 24.0643 37.3944 23.6972C38.2012 22.0837 39 19.9313 39 16.5C39 12.9793 37.6383 9.822 35.0307 7.55747C32.4332 5.30179 28.6812 4 24 4C19.3188 4 15.5668 5.30179 12.9693 7.55747ZM32.9736 32.3418C32.8348 32.4036 32.7167 32.4701 32.6164 32.5382C32.2177 32.809 32.0108 33.1635 31.9046 33.567C31.7927 33.9921 31.7972 34.4631 31.8454 34.8974C31.8691 35.1101 31.9015 35.301 31.931 35.4672L31.9387 35.5108C31.9504 35.5764 31.9627 35.6455 31.972 35.7038C31.9808 35.759 32 35.8793 32 36C32 36.8549 31.2762 37.6113 30.1508 38.1037C28.9703 38.6201 27.0631 39 24 39C20.9369 39 19.0297 38.6201 17.8492 38.1037C16.7238 37.6113 16 36.8549 16 36C16 35.8793 16.0191 35.7593 16.028 35.7042C16.0373 35.6458 16.0496 35.5764 16.0613 35.5108L16.069 35.4672C16.0985 35.301 16.1309 35.1101 16.1546 34.8974C16.2028 34.4631 16.2073 33.9921 16.0954 33.567C15.9892 33.1635 15.7823 32.809 15.3836 32.5382C15.2833 32.4701 15.1652 32.4036 15.0264 32.3418C15.0413 32.8049 15.0646 33.3606 15.1011 33.9661C15.2034 35.665 15.4052 37.6821 15.7902 39.1468C15.8292 39.295 15.9214 39.4227 16.0552 39.5085C17.2336 40.2645 20.3518 42 24 42C27.6482 42 30.7664 40.2645 31.9448 39.5085C32.0786 39.4227 32.1708 39.295 32.2098 39.1468C32.5948 37.6821 32.7966 35.665 32.8989 33.9661C32.9354 33.3606 32.9587 32.8049 32.9736 32.3418ZM29.3492 36.2713C28.5297 36.6299 26.9369 37 24 37C21.0631 37 19.4703 36.6299 18.6508 36.2713C18.2723 36.1057 18.0995 35.9662 18.0253 35.8899L18.0384 35.816C18.0695 35.6404 18.1113 35.3977 18.1423 35.1182C18.2034 34.5682 18.2302 33.8204 18.0296 33.058C17.8233 32.274 17.374 31.4723 16.5071 30.8836C15.8566 30.4419 15.0275 30.1586 14 30.0501V27C14 26.1643 13.7458 25.4469 13.435 24.7907C13.281 24.4655 13.1042 24.1378 12.9299 23.8163L12.8984 23.7582C12.731 23.4496 12.5625 23.139 12.3944 22.8028C11.7012 21.4163 11 19.5687 11 16.5C11 13.5207 12.1383 10.928 14.2807 9.06753C16.4332 7.19821 19.6812 6 24 6C28.3188 6 31.5668 7.19821 33.7193 9.06753C35.8617 10.928 37 13.5207 37 16.5C37 19.5687 36.2988 21.4163 35.6056 22.8028C35.4375 23.139 35.269 23.4496 35.1016 23.7582L35.0701 23.8163C34.8958 24.1378 34.719 24.4655 34.565 24.7907C34.2542 25.4469 34 26.1643 34 27V30.0501C32.9725 30.1586 32.1434 30.4419 31.4929 30.8836C30.626 31.4723 30.1767 32.274 29.9704 33.058C29.7698 33.8204 29.7966 34.5682 29.8577 35.1182C29.8887 35.3977 29.9305 35.6404 29.9616 35.816L29.9747 35.8899C29.9005 35.9662 29.7277 36.1057 29.3492 36.2713ZM19 29C16.7909 29 15 26.7614 15 24C15 21.2386 16.7909 19 19 19C21.2091 19 23 21.2386 23 24C23 26.7614 21.2091 29 19 29ZM33 24C33 26.7614 31.2091 29 29 29C26.7909 29 25 26.7614 25 24C25 21.2386 26.7909 19 29 19C31.2091 19 33 21.2386 33 24ZM24 29L23.9818 29.0084C23.7321 29.1255 21 30.4486 21 32.2759C21 33.1061 21.5794 33.8805 22.3993 33.9874C22.4627 33.9957 22.5276 34 22.5937 34C23.233 34 23.7073 33.6278 24 33.0998C24.2928 33.6278 24.7671 34 25.4062 34C25.4724 34 25.5373 33.9957 25.6007 33.9874C26.4205 33.8805 27 33.1062 27 32.2759C27 30.369 24.0178 29.0078 24.0178 29.0078L24 29Z" fill-rule="evenodd" fill="#324E98"/></g>
+    <circle cx="210.7" cy="236.7" r="34" fill="none" stroke="#fff" stroke-width="1.4" opacity="0.65"/><circle cx="54.7" cy="184.7" r="26" fill="#F7F6F3" stroke="#fff" stroke-width="2.4"/>
+    <g transform="translate(35.400000000000006,173.29999999999998) scale(0.0084)"><path d="M3284 2406 c-3 -14 -3 -39 1 -54 4 -15 7 -54 6 -88 -1 -55 1 -62 23 -72 22 -10 24 -16 31 -152 7 -142 7 -143 -17 -166 l-24 -24 -74 56 c-118 88 -147 102 -227 110 l-72 6 -48 -40 -47 -41 -43 35 c-24 20 -77 49 -118 66 l-75 30 -67 -16 c-38 -9 -84 -21 -103 -26 -25 -7 -48 -26 -79 -65 -42 -53 -46 -55 -80 -49 -20 4 -39 10 -44 13 -8 8 -47 220 -47 257 0 15 8 24 25 28 24 6 25 9 25 96 l0 90 -52 0 c-29 0 -70 -5 -90 -11 -36 -9 -38 -12 -38 -52 0 -23 -3 -59 -6 -79 -6 -34 -4 -38 15 -38 20 0 21 -4 21 -109 0 -75 -4 -112 -12 -119 -7 -5 -47 -13 -89 -17 -70 -6 -81 -11 -128 -49 -43 -34 -53 -50 -66 -96 -19 -69 -29 -85 -48 -84 -8 1 -48 5 -89 8 l-73 7 -52 -38 c-44 -32 -55 -47 -70 -93 -18 -55 -22 -174 -9 -245 6 -29 2 -34 -61 -80 -38 -27 -103 -83 -145 -123 l-77 -75 -73 27 c-60 21 -90 26 -168 26 l-95 0 -78 -55 c-67 -48 -81 -54 -95 -43 -10 7 -42 33 -72 58 -30 26 -66 54 -80 63 -44 30 -160 18 -208 -23 -18 -15 -27 -42 -44 -134 l-20 -115 64 -101 64 -101 125 -72 c68 -41 158 -94 199 -120 74 -46 76 -46 234 -66 87 -12 161 -23 163 -25 3 -2 -5 -35 -16 -74 -12 -38 -21 -74 -21 -79 0 -5 15 -18 34 -28 l35 -19 40 28 c31 22 44 39 52 70 36 139 37 141 87 155 30 9 34 7 70 -36 35 -43 96 -83 125 -83 8 0 22 9 32 20 18 20 18 22 -13 85 -20 40 -28 67 -21 71 6 3 16 -1 22 -10 7 -8 37 -49 67 -90 76 -102 125 -126 265 -129 55 -1 111 2 125 6 22 7 36 0 90 -41 79 -60 117 -72 239 -72 94 0 95 0 165 44 96 59 108 60 177 26 82 -42 179 -55 293 -41 85 11 96 15 175 67 70 47 89 55 115 50 143 -27 179 -29 260 -10 72 16 87 24 133 67 l52 49 105 -27 105 -28 108 68 c72 45 150 107 235 187 102 96 135 121 175 133 26 8 57 21 68 29 19 14 18 17 -32 68 -51 52 -53 56 -53 109 0 54 -3 61 -100 206 l-99 150 -11 134 c-16 185 -24 198 -146 255 l-95 44 -123 0 -123 0 -37 47 c-27 34 -59 59 -114 88 l-77 40 -3 118 c-3 117 -3 117 23 129 25 11 25 12 22 110 -2 54 -6 100 -8 103 -3 2 -46 7 -96 11 l-92 7 -7 -27z m-2824 -1256 c0 -5 -9 -10 -20 -10 -11 0 -20 5 -20 10 0 6 9 10 20 10 11 0 20 -4 20 -10z m0 -40 c0 -5 -9 -10 -20 -10 -11 0 -20 5 -20 10 0 6 9 10 20 10 11 0 20 -4 20 -10z m-8 -42 c-9 -9 -15 -9 -24 0 -9 9 -7 12 12 12 19 0 21 -3 12 -12z m590 -548 c4 -45 -5 -50 -39 -18 l-23 22 21 22 c28 30 36 24 41 -26z m107 26 l22 -23 -32 -27 c-17 -15 -32 -26 -33 -24 -6 8 7 98 13 98 4 0 18 -11 30 -24z" fill="#324E98"/></g>
+    <circle cx="54.7" cy="184.7" r="34" fill="none" stroke="#fff" stroke-width="1.4" opacity="0.65"/><circle cx="288.7" cy="158.7" r="26" fill="#F7F6F3" stroke="#fff" stroke-width="2.4"/>
+    <g transform="translate(273.7,143.7) scale(0.0586)"><path d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z" fill="#324E98"/></g>
+    <circle cx="288.7" cy="158.7" r="34" fill="none" stroke="#fff" stroke-width="1.4" opacity="0.65"/>
+</svg>
+        <div class="heroCaption">HUMAN · FAUNA · FLORA — MAPPED FROM SPACE</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap statBand">
+    <div class="stat">
+      <div class="s"><b>24</b><span>months<br>RIF EXCELLENCE HUBS</span><i></i></div>
+      <div class="s"><b>6</b><span>Tier 1 archaeological sites<br>across Cyprus</span><i></i></div>
+      <div class="s"><b>5</b><span>FAIR geospatial datasets<br>published openly</span><i></i></div>
+      <div class="s"><b>2</b><span>peer-reviewed papers<br>open access</span><i></i></div>
+    </div>
+  </div>
+
+  <div class="wrap" style="padding-top:58px">
+    <div class="eyebrow" style="text-align:center">What we do</div>
+    <h2 class="sec" style="text-align:center;margin-bottom:30px">Two sciences, one landscape</h2>
+    <div class="grid g3">
+      <div class="card"><div class="ic"><svg viewBox="0 0 48 24" width="44"><g transform="translate(24,12)"><rect x="-7" y="-6" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><rect x="-22" y="-4" width="11" height="8" rx="1" fill="currentColor"/><rect x="11" y="-4" width="11" height="8" rx="1" fill="currentColor"/></g></svg></div><h3>Earth Observation baselines</h3><p>Sentinel-2 NDVI, Copernicus terrain, hydrology and Sentinel-1 SAR build an environmental baseline for each ancient site — without a single new excavation.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 576 512" width="26"><path d="M153.7 144.8c6.9 16.3 20.6 31.2 38.3 31.2l192 0c17.7 0 31.4-14.9 38.3-31.2C434.4 116.1 462.9 96 496 96c44.2 0 80 35.8 80 80c0 30.4-17 56.9-42 70.4c-3.6 1.9-6 5.5-6 9.6s2.4 7.7 6 9.6c25 13.5 42 40 42 70.4c0 44.2-35.8 80-80 80c-33.1 0-61.6-20.1-73.7-48.8C415.4 350.9 401.7 336 384 336l-192 0c-17.7 0-31.4 14.9-38.3 31.2C141.6 395.9 113.1 416 80 416c-44.2 0-80-35.8-80-80c0-30.4 17-56.9 42-70.4c3.6-1.9 6-5.5 6-9.6s-2.4-7.7-6-9.6C17 232.9 0 206.4 0 176c0-44.2 35.8-80 80-80c33.1 0 61.6 20.1 73.7 48.8z" fill="currentColor"/></svg></div><h3>Bioarchaeology, reused</h3><p>~120 human, 150 faunal and 50 botanical published records are harmonised into one spatial framework — open science from open evidence.</p></div>
+      <div class="card"><div class="ic"><svg viewBox="0 0 24 24" width="26"><g fill="currentColor"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1" opacity="0.55"/><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="2" y="9" width="6" height="6" rx="1" opacity="0.55"/><rect x="9" y="9" width="6" height="6" rx="1"/><rect x="16" y="9" width="6" height="6" rx="1" opacity="0.55"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1" opacity="0.55"/><rect x="16" y="16" width="6" height="6" rx="1"/></g></svg></div><h3>The BIOLAND GeoHub</h3><p>A QGIS-based decision-support platform with five thematic map groups, FAIR datasets, and a public download portal at project end.</p></div>
+    </div>
+
+    <div class="eyebrow" style="text-align:center;margin-top:60px">Structure</div>
+    <h2 class="sec" style="text-align:center;margin-bottom:6px">Five Work Packages</h2>
+    <p class="lede" style="text-align:center;margin:0 auto 22px">From environmental baselines to integrated indices to a public geospatial platform — see how the project is organised and download public deliverables.</p>
+    <div style="text-align:center"><a class="btn" onclick="go('workpackages')">Explore the Work Packages</a></div>
+    <h2 class="sec" style="text-align:center;margin-top:60px">Latest news</h2>
+    <div class="news" id="homeNews"><p class="muted-note" style="text-align:center;grid-column:1/-1">Loading news…</p></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="page" id="about"><div class="wrap">
+  <div class="eyebrow">About the project</div>
+  <h2 class="sec">Reading ancient Cypriot landscapes by linking satellites with bioarchaeology</h2>
+  <p class="lede">BIOLAND-Cy develops, for the first time in Cyprus, an interdisciplinary framework that links Earth Observation (EO) and Remote Sensing with already-published bioarchaeological evidence — human osteology, stable isotopes, zooarchaeology and archaeobotany. The project does no new excavation and takes no new samples. Instead it digitally re-evaluates the published record against satellite-derived environmental baselines to ask how people lived in, fed from, and moved through the ancient landscape.</p>
+
+  <h3>What the project does</h3>
+  <p>For each studied site, BIOLAND-Cy builds an environmental baseline from open satellite data — vegetation (NDVI), terrain, hydrology, and radar (SAR) — and brings it into the same spatial frame as the published bioarchaeological evidence for that site. From this integration it produces three core outputs: a <strong>Resource Accessibility Index (RAI)</strong> that describes where subsistence resources were reachable, an <strong>Activity Index</strong> that models how the surrounding landscape was used and traversed, and the <strong>BIOLAND GeoHub</strong> — a QGIS-based platform with five thematic map groups that makes all of this openly available to researchers and heritage managers.</p>
+  <p>The work runs over 24 months across five Work Packages, and everything is built to open-science standards: datasets are released CC-BY 4.0 via Zenodo, code is released under MIT, and publications follow Plan S. Because the project works only from published and openly available data, its results are fully reproducible and free of new fieldwork.</p>
+
+  <h3>Why it matters</h3>
+  <p>Bioarchaeological datasets in Cyprus — isotopes, faunal remains, skeletal indicators — have rarely been placed in a shared environmental and spatial context, and no prior study has systematically combined them with EO-derived landscape baselines. BIOLAND-Cy bridges that gap. In doing so it strengthens the Eratosthenes Centre of Excellence's capacity in EO for cultural heritage and contributes to Cyprus' Smart Specialisation priority 6.1.5 (satellite EO and Remote Sensing for archaeological monuments and cultural heritage), while supporting UN SDG 11.4 on safeguarding cultural heritage.</p>
+
+  <h3>Key objectives</h3>
+  <div class="grid g2" style="margin-top:6px">
+    <div class="card"><h3>Environmental baselines</h3><p>Build EO baselines (NDVI, terrain, hydrology) for ancient Cypriot landscapes at 10–25 m resolution.</p></div>
+    <div class="card"><h3>Resource Accessibility Index</h3><p>Create an RAI linking environment to diet, validated with ≥120 published isotopic datapoints.</p></div>
+    <div class="card"><h3>Integrated bioarchaeology</h3><p>Harmonise published human, faunal and botanical data into one open spatial framework.</p></div>
+    <div class="card"><h3>Activity modelling</h3><p>Model movement and land use from terrain and Sentinel-1 SAR coherence.</p></div>
+    <div class="card"><h3>The BIOLAND GeoHub</h3><p>Deliver a QGIS platform with five thematic map groups and FAIR documentation.</p></div>
+    <div class="card"><h3>Open science</h3><p>Publish FAIR datasets, open code, and peer-reviewed papers — fully reproducible.</p></div>
+  </div>
+
+  <h3>The team</h3>
+  <div class="team">
+    <div class="member"><div class="ph">MM</div><div class="b"><h3>Mahmoud Mardini</h3><div class="role">Coordinator · Bioarchaeology</div><p>Bioarchaeologist specialising in diet reconstruction, mobility and skeletal stress across the Eastern Mediterranean; project lead across all five work packages.</p></div></div>
+    <div class="member"><div class="ph">AL</div><div class="b"><h3>Andreas Livadiotis</h3><div class="role">Assistant Researcher · GIS &amp; EO</div><p>Geophysics, GIS and UAV survey; supports the Earth-Observation processing and spatial-analysis tasks in WP3–WP5.</p></div></div>
+    <div class="member"><div class="ph">CD</div><div class="b"><h3>Christodoulos Demetriou</h3><div class="role">Assistant Researcher · Spatial documentation</div><p>Architect; spatial documentation, data organisation and visual content across the project's work packages.</p></div></div>
+  </div>
+
+  <h3>Funding</h3>
+  <p>BIOLAND-Cy is funded by the Cyprus Research and Innovation Foundation (RIF) under the EXCELLENCE HUBS programme of RESTART 2016–2020 (proposal EXCELLENCE/0925/0163), co-funded by the Republic of Cyprus and the European Union. Sole implementer: the Eratosthenes Centre of Excellence, Limassol.</p>
+</div></section>
+
+<!-- RESEARCH -->
+<section class="page" id="research"><div class="wrap">
+  <div class="eyebrow">Research</div>
+  <h2 class="sec">How the work fits together</h2>
+  <p class="lede">Three scientific work packages move from environmental baselines, to integrated indices, to a public geospatial platform.</p>
+  <div class="flow">
+    <div class="step"><span class="num">WP3</span><h3>Diet &amp; Resource Indexing</h3><p>EO environmental baselines (NDVI, terrain, hydrology) are combined with harmonised isotopic and bioarchaeological data to build a Resource Accessibility Index validated against ≥120 human isotopic datapoints.</p></div>
+    <div class="step"><span class="num">WP4</span><h3>Activity Modelling</h3><p>Terrain and Sentinel-1 SAR coherence drive cost-surface mobility models and an Activity Index describing how landscapes around each site were used and moved through.</p></div>
+    <div class="step"><span class="num">WP5</span><h3>Integration &amp; GeoHub</h3><p>All datasets are harmonised into a FAIR geodatabase and surfaced through the BIOLAND GeoHub — a QGIS platform with five thematic map groups and full documentation.</p></div>
+  </div>
+  <h3>Site-selection methodology</h3>
+  <p>Sites were ranked by an evidence-based <strong>BIOLAND-fit score</strong> = (2 × human bioarchaeology) + zooarchaeology + archaeobotany + strontium baseline, drawing on published references and open databases, Republic of Cyprus only.</p>
+  <table class="t"><thead><tr><th>Rank</th><th>Tier 1 site</th><th>Period</th><th>Evidence coverage</th></tr></thead><tbody>
+    <tr><td>1</td><td>Khirokitia / Choirokoitia</td><td>Aceramic Neolithic (UNESCO WHS)</td><td>3 / 4</td></tr>
+    <tr><td>2</td><td>Hala Sultan Tekke</td><td>Late Bronze Age</td><td><strong>4 / 4</strong> — flagship</td></tr>
+    <tr><td>3</td><td>Souskiou complex</td><td>Chalcolithic</td><td>1 / 4</td></tr>
+    <tr><td>4</td><td>Nea Paphos / Kato Paphos</td><td>Hellenistic → Byzantine</td><td>2 / 4</td></tr>
+    <tr><td>5</td><td>Amathus</td><td>Cypro-Geometric → Late Antique</td><td>3 / 4</td></tr>
+    <tr><td>6</td><td>Kissonerga + Lemba-Lakkous</td><td>Chalcolithic + LPPNB</td><td>3 / 4</td></tr>
+  </tbody></table>
+  <h3>Where we work</h3>
+  <p>Six Tier 1 sites anchor the study, ranked by published bioarchaeological evidence — each receives full multi-season Earth-Observation coverage. Photographs will replace the colour fields as fieldwork-free imagery is curated.</p>
+  <div class="tiles">
+    <div class="tile t1"><div><h3>Khirokitia / Choirokoitia</h3><span>Aceramic Neolithic · UNESCO WHS</span></div></div>
+    <div class="tile t2"><div><h3>Hala Sultan Tekke</h3><span>Late Bronze Age · 4/4 evidence flagship</span></div></div>
+    <div class="tile t3"><div><h3>Souskiou complex</h3><span>Chalcolithic mortuary complex</span></div></div>
+    <div class="tile t4"><div><h3>Nea Paphos / Kato Paphos</h3><span>Hellenistic → Byzantine</span></div></div>
+    <div class="tile t5"><div><h3>Amathus</h3><span>Cypro-Geometric → Late Antique</span></div></div>
+    <div class="tile t6"><div><h3>Kissonerga + Lemba-Lakkous</h3><span>Chalcolithic + LPPNB</span></div></div>
+  </div>
+  <h3 style="margin-top:38px">Methods</h3>
+  <p>The project draws on NDVI and multi-season optical imagery, Sentinel-1 SAR coherence, digital elevation models, stable-isotope analysis, and machine-learning approaches — with an explicit strategy for bridging modern satellite imagery and ancient evidence through multi-year stacks and long-term Landsat baselines.</p>
+</div></section>
+
+<!-- WORK PACKAGES -->
+<section class="page" id="workpackages"><div class="wrap">
+  <div class="eyebrow">Work Packages</div>
+  <h2 class="sec">How the project is organised</h2>
+  <p class="lede">BIOLAND-Cy is structured into <strong>five Work Packages</strong> spanning project management, communication, and three scientific strands. Together they produce <strong>19 deliverables</strong> — datasets, indices, the GeoHub platform, and reports. Public deliverables can be downloaded below as they are released.</p>
+
+  <div class="box" style="margin:24px 0;border-left:4px solid var(--ochre)">
+    <h3 style="margin-top:0">Available for download</h3>
+    <p class="muted-note" style="margin-bottom:10px">Deliverables marked public are listed here with their PDF or DOI. They appear automatically once released through the editor.</p>
+    <div id="wpDownloads"><p class="muted-note">Loading public deliverables…</p></div>
+  </div>
+
+  <div class="wpblock">
+    <h3><span class="wptag wp1">WP1</span> Project Management</h3>
+    <p class="muted-note">M1–M24 · Governance, reporting, risk management and the Data Management Plan.</p>
+    <ul class="dlist">
+      <li><strong>D1.1 — Project Management Plan</strong> (M1): governance structure, procedures and monitoring framework.</li>
+      <li><strong>D1.2 — Data Management Plan</strong> (M6): FAIR data handling, licensing and repositories.</li>
+      <li><strong>D1.3 — Mid-Term Progress Report</strong> (M12).</li>
+      <li><strong>D1.4 — Final Technical and Financial Report</strong> (M24).</li>
+    </ul>
+  </div>
+
+  <div class="wpblock">
+    <h3><span class="wptag wp2">WP2</span> Dissemination &amp; Communication</h3>
+    <p class="muted-note">M1–M24 · Visual identity, website, outreach, publications and exploitation.</p>
+    <ul class="dlist">
+      <li><strong>D2.1 — BIOLAND Communication Kit</strong> (M3): visual identity, templates and channels.</li>
+      <li><strong>D2.2 — Project Website and Social Media Channels</strong> (M3).</li>
+      <li><strong>D2.3 — KTO Submission Request</strong> (M13).</li>
+      <li><strong>D2.4 — Peer-Reviewed Publications and Conference Papers</strong> (M24).</li>
+      <li><strong>D2.5 — Public Workshop Report and Materials</strong> (M24).</li>
+    </ul>
+  </div>
+
+  <div class="wpblock">
+    <h3><span class="wptag wp3">WP3</span> Diet &amp; Resource Indexing</h3>
+    <p class="muted-note">M2–M16 · Environmental baselines, integrated bioarchaeology and the Resource Accessibility Index.</p>
+    <ul class="dlist">
+      <li><strong>D3.1 — Environmental Baseline Dataset</strong> (M6): NDVI, terrain and hydrology layers.</li>
+      <li><strong>D3.2 — Harmonized Isotope and Bioarchaeological Dataset</strong> (M12).</li>
+      <li><strong>D3.3 — Resource Accessibility Index (RAI)</strong> (M16).</li>
+    </ul>
+  </div>
+
+  <div class="wpblock">
+    <h3><span class="wptag wp4">WP4</span> Activity Modelling</h3>
+    <p class="muted-note">M10–M20 · Terrain and SAR-driven mobility and activity modelling.</p>
+    <ul class="dlist">
+      <li><strong>D4.1 — Preprocessed Terrain–SAR–Archaeological Dataset</strong> (M14).</li>
+      <li><strong>D4.2 — Cost-Surface and Mobility Model Outputs</strong> (M18).</li>
+      <li><strong>D4.3 — SAR Coherence Analysis and Stability Maps</strong> (M18).</li>
+      <li><strong>D4.4 — Activity Index</strong> (M20).</li>
+    </ul>
+  </div>
+
+  <div class="wpblock">
+    <h3><span class="wptag wp5">WP5</span> Integration &amp; BIOLAND GeoHub</h3>
+    <p class="muted-note">M16–M24 · Harmonised geodatabase and the public QGIS GeoHub.</p>
+    <ul class="dlist">
+      <li><strong>D5.1 — Harmonised Geodatabase and Metadata Package</strong> (M20).</li>
+      <li><strong>D5.2 — BIOLAND GeoHub</strong> (M24).</li>
+      <li><strong>D5.3 — User Documentation and Workflow Guide</strong> (M24).</li>
+    </ul>
+  </div>
+
+  <h3 style="margin-top:40px">Deliverables overview</h3>
+  <p class="muted-note">Live status of all deliverables. Public items link to their PDF or DOI.</p>
+  <table class="t" id="wpDelTable"><thead><tr><th>ID</th><th>Deliverable</th><th>WP</th><th>Due</th><th>Status</th><th>Download</th></tr></thead><tbody id="wpDelBody"><tr><td colspan="6" class="muted-note">Loading deliverables…</td></tr></tbody></table>
+
+  <h3 style="margin-top:40px">Open data &amp; code</h3>
+  <div class="grid g2" style="margin-top:10px">
+    <div class="card"><h3>Datasets — Zenodo</h3><p>Five FAIR-compliant geospatial datasets, published openly under CC-BY 4.0 via the <em>bioland-cy</em> Zenodo community as they are released.</p></div>
+    <div class="card"><h3>Code — GitHub</h3><p>Reproducible processing pipelines released under the MIT licence at <em>eratosthenes-coe/bioland-cy</em> from project end.</p></div>
+  </div>
+</div></section>
+
+<!-- NEWS -->
+<section class="page" id="news"><div class="wrap">
+  <div class="eyebrow">News &amp; updates</div>
+  <h2 class="sec">Project news</h2>
+  <p class="lede">Method explainers, milestone announcements and event reports. At least one post every two months. Click any post to read the full article.</p>
+  <div class="news" id="newsList" style="margin-top:24px"><p class="muted-note">Loading news…</p></div>
+  <div class="box" style="margin-top:30px;text-align:center">
+    <h3 style="margin-top:0">Subscribe to the newsletter</h3>
+    <p>Quarterly updates on progress, datasets and events. Double opt-in; unsubscribe anytime.</p>
+    <form action="https://formsubmit.co/mahmoud.mardini@eratosthenes.org.cy" method="POST" style="display:flex;gap:10px;max-width:440px;margin:0 auto;flex-wrap:wrap">
+      <input type="hidden" name="_subject" value="BIOLAND-Cy website — newsletter signup">
+      <input type="text" name="_honey" style="display:none">
+      <input type="email" name="email" required placeholder="your@email.com" style="flex:1;padding:11px;border:1px solid var(--line);border-radius:8px">
+      <button class="btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+</div></section>
+
+<!-- EVENTS & WORKSHOPS -->
+<section class="page" id="events"><div class="wrap">
+  <div class="eyebrow">Events &amp; Workshops</div>
+  <h2 class="sec">Events &amp; workshops</h2>
+  <p class="lede">Upcoming and past project events and workshops. Workshops open as full articles with photos and materials; event materials are archived after each.</p>
+  <div id="eventsList" style="margin-top:20px"><p class="muted-note">Loading events…</p></div>
+</div></section>
+
+<!-- CONTACT -->
+<section class="page" id="contact"><div class="wrap">
+  <div class="eyebrow">Contact</div>
+  <h2 class="sec">Get in touch</h2>
+  <div class="contact-grid" style="margin-top:20px">
+    <div class="box">
+      <h3 style="margin-top:0">Send a message</h3>
+      <form action="https://formsubmit.co/mahmoud.mardini@eratosthenes.org.cy" method="POST">
+        <input type="hidden" name="_subject" value="BIOLAND-Cy website — contact form">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+        <div class="field"><label for="cf-name">Name</label><input id="cf-name" type="text" name="name" required></div>
+        <div class="field"><label for="cf-email">Email</label><input id="cf-email" type="email" name="email" required></div>
+        <div class="field"><label for="cf-msg">Message</label><textarea id="cf-msg" rows="5" name="message" required></textarea></div>
+        <button class="btn" type="submit">Send</button>
+        <p class="muted-note" style="margin:10px 0 0">Messages go directly to the project coordinator.</p>
+      </form>
+    </div>
+    <div>
+      <div class="box" style="margin-bottom:20px"><h3 style="margin-top:0">Project Coordinator</h3><p style="margin:0"><strong>Dr Mahmoud Mardini</strong><br>Eratosthenes Centre of Excellence<br>Limassol, Cyprus</p></div>
+      <div class="box"><h3 style="margin-top:0">Follow us</h3><p style="margin:0">LinkedIn · Facebook · Instagram</p></div>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="fgrid">
+    <div>
+      <p style="color:#cdd8ee;margin-top:4px">Bioarchaeology and Integrated Observation for LANdscape Dynamics in Cyprus — a research project of the Eratosthenes Centre of Excellence.</p>
+      <div class="fundrow">
+        <span class="fundchip eu"><img src="images/funders/eu_only.png" alt="Co-funded by the European Union" onerror="this.parentNode.outerHTML='&lt;span class=&quot;embf&quot;&gt;Co-funded by the European Union&lt;/span&gt;'"></span>
+        <span class="fundchip"><img src="images/funders/roc_only.png" alt="Republic of Cyprus" onerror="this.parentNode.outerHTML='&lt;span class=&quot;embf&quot;&gt;Republic of Cyprus&lt;/span&gt;'"></span>
+        <span class="fundchip"><img src="images/funders/rif_only.png" alt="Research and Innovation Foundation" onerror="this.parentNode.outerHTML='&lt;span class=&quot;embf&quot;&gt;Research &amp; Innovation Foundation&lt;/span&gt;'"></span>
+        <span class="fundchip"><img src="images/funders/ecoe_colour.png" alt="Eratosthenes Centre of Excellence" onerror="this.parentNode.outerHTML='&lt;span class=&quot;embf&quot;&gt;Eratosthenes Centre of Excellence&lt;/span&gt;'"></span>
+      </div>
+      <p class="fundstmt">The BIOLAND-Cy project (EXCELLENCE/0925/0163) is funded by the Research and Innovation Foundation (RIF) under the EXCELLENCE HUBS programme of RESTART 2016–2020, co-funded by the Republic of Cyprus and the European Union, and implemented by the Eratosthenes Centre of Excellence.</p>
+    </div>
+    <div><h4>Explore</h4><p><a onclick="go('about')">About</a><br><a onclick="go('research')">Research</a><br><a onclick="go('workpackages')">Work Packages</a><br><a onclick="go('news')">News</a><br><a onclick="go('events')">Events &amp; Workshops</a></p></div>
+    <div><h4>Legal</h4><p><a href="privacy.html">Privacy policy</a><br><a href="accessibility.html">Accessibility</a><br><a onclick="go('contact')">Contact</a><br><a href="/admin/" style="opacity:.55">Editor login</a></p></div>
+  </div>
+  <div class="copy">© 2026 BIOLAND-Cy · Eratosthenes Centre of Excellence · bioland-cy.eratosthenes.org.cy &nbsp;|&nbsp; Co-funded by the European Union &amp; the Republic of Cyprus (RIF), EXCELLENCE/0925/0163 &nbsp;|&nbsp; WCAG 2.1 AA · GDPR</div>
+</div></footer>
+
+<!-- Article modal (news + workshops open here) -->
+<div class="artBack" id="artBack" onclick="if(event.target===this)closeArt()">
+  <div class="artModal" id="artModal">
+    <button class="artClose" onclick="closeArt()" aria-label="Close">×</button>
+    <div class="cover" id="artCover"></div>
+    <div class="ab"><div class="meta" id="artMeta"></div><h2 id="artTitle"></h2><div class="body" id="artBody"></div></div>
+  </div>
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.menu a').forEach(a=>a.classList.toggle('active',a.dataset.p===id));
+  document.getElementById('menu').classList.remove('open');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function mdToHtml(s){if(!s)return'';let h=s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  h=h.replace(/!\[[^\]]*\]\(([^)]+)\)/g,'<img src="$1" alt="">');
+  h=h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
+  h=h.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  return h.split(/\n{2,}/).map(b=>/^<(h3|img|ul|ol)/.test(b.trim())?b:'<p>'+b.replace(/\n/g,'<br>')+'</p>').join('');}
+let _curArt=null;
+function openArt(a){_curArt=a;
+  document.getElementById('artCover').style.backgroundImage=a.image?`url('${a.image}')`:'';
+  const fmt=d=>d?new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}):'';
+  document.getElementById('artMeta').textContent=[a._kind||'News',fmt(a.date),a.location||''].filter(Boolean).join(' · ');
+  document.getElementById('artTitle').textContent=a.title||'';
+  let body=a.body?mdToHtml(a.body):('<p>'+(a.summary||'')+'</p>');
+  if(a.embed_html)body+=`<div style="margin-top:14px">${a.embed_html}</div>`;
+  if(a.register)body+=`<p style="margin-top:16px"><a class="btn" href="${a.register}" target="_blank" rel="noopener">Register</a></p>`;
+  if(a.materials)body+=`<p style="margin-top:10px"><a href="${a.materials}">Download materials ↓</a></p>`;
+  document.getElementById('artBody').innerHTML=body;
+  document.getElementById('artBack').classList.add('open');document.body.style.overflow='hidden';
+}
+function closeArt(){document.getElementById('artBack').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeArt();});
+
+async function loadJSON(path,key){try{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();
+  if(Array.isArray(d))return d;
+  if(d&&key&&Array.isArray(d[key]))return d[key];
+  if(d&&Array.isArray(d.posts))return d.posts;
+  if(d&&Array.isArray(d.items))return d.items;
+  return null;}catch(e){return null;}}
+function statusPill(s){const m={'Public':'done','Submitted':'done','In progress':'prog','Planned':'plan'};return `<span class="pill ${m[s]||'plan'}">${s||'Planned'}</span>`;}
+window._news=[];window._workshops=[];
+function findArt(t){return(window._news||[]).concat(window._workshops||[]).find(x=>x.title===t);}
+function openArtByTitle(t){const a=findArt(t);if(a)openArt(a);}
+async function renderContent(){
+  const fmt=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  let news=await loadJSON('content/news.json','posts');
+  if(news)news=news.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  news=(news||[]).map(n=>({...n,_kind:'News'}));window._news=news;
+  const esc=s=>(s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');
+  const newsCard=(n)=>`<article class="post" onclick="openArtByTitle('${esc(n.title)}')" style="cursor:pointer"><div class="img" style="${n.image?`background-image:url('${n.image}')`:''}"></div><div class="b"><div class="date">${n.date?fmt(n.date):''}</div><h3>${n.title||''}</h3><p>${n.summary||''}</p><span class="readmore">Read article →</span></div></article>`;
+  const homeN=document.getElementById('homeNews'),listN=document.getElementById('newsList');
+  if(news.length){
+    homeN.innerHTML=news.slice(0,3).map(newsCard).join('');
+    listN.innerHTML=news.map(newsCard).join('');
+  }else{
+    const ph='<p class="muted-note" style="text-align:center;grid-column:1/-1">No news posts yet — they will appear here once added in the editor.</p>';
+    homeN.innerHTML=ph;listN.innerHTML=ph;
+  }
+  const dels=await loadJSON('content/deliverables.json','items')||[];
+  const delRow=d=>`<tr><td><b>${d.code||''}</b></td><td>${d.title||''}</td><td>${d.wp||''}</td><td>${d.due_month||''}</td><td>${statusPill(d.status)}</td><td>${d.pdf?`<a href="${d.pdf}">PDF ↓</a>`:(d.doi?`<a href="${d.doi}">DOI</a>`:'—')}</td></tr>`;
+  const wpBody=document.getElementById('wpDelBody');
+  if(wpBody)wpBody.innerHTML=dels.length?dels.map(delRow).join(''):'<tr><td colspan="6" class="muted-note">Deliverables will be listed here as they are released.</td></tr>';
+  const pub=dels.filter(d=>(d.pdf||d.doi)&&['Public','Submitted'].includes(d.status));
+  const dl=document.getElementById('wpDownloads');
+  if(dl)dl.innerHTML=pub.length?pub.map(d=>`<div style="padding:7px 0;border-top:1px solid var(--line)"><strong>${d.code} — ${d.title}</strong> <a class="dlbtn" href="${d.pdf||d.doi}">${d.pdf?'Download PDF':'DOI'}</a></div>`).join(''):'<p class="muted-note" style="margin:0">No public deliverables released yet. They will appear here automatically once published.</p>';
+  const evs=await loadJSON('content/events.json','items')||[];
+  let wks=await loadJSON('content/workshops.json','items')||[];
+  wks=wks.map(w=>({...w,_kind:'Workshop'}));window._workshops=wks;
+  const el=document.getElementById('eventsList');
+  const evRow=e=>`<div class="box" style="margin-bottom:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap"><div><h3 style="margin:0 0 4px">${e.title||''}</h3><p style="margin:0;color:var(--muted);font-size:14px">${e.date?fmt(e.date):''}${e.time?' · '+e.time:''}${e.location?' · '+e.location:''}</p></div><div style="display:flex;align-items:center;gap:10px">${e.register?`<a class="btn" href="${e.register}">Register</a>`:''}${e.materials?`<a href="${e.materials}">Materials ↓</a>`:''}<span class="pill ${e.status==='Past'?'plan':'prog'}">${e.status||'Upcoming'}</span></div></div>`;
+  const wkRow=w=>`<div class="box" style="margin-bottom:14px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;cursor:pointer" onclick="openArtByTitle('${esc(w.title)}')"><div><span class="pill prog" style="margin-bottom:6px">Workshop</span><h3 style="margin:2px 0 4px">${w.title||''}</h3><p style="margin:0;color:var(--muted);font-size:14px">${w.date?fmt(w.date):''}${w.location?' · '+w.location:''}</p></div><div style="display:flex;align-items:center"><span class="readmore">Open ↗</span></div></div>`;
+  let html='';
+  if(wks.length)html+='<h3 style="margin:6px 0 12px">Workshops</h3>'+wks.map(wkRow).join('');
+   if(evs.length)html+='<h3 style="margin:22px 0 12px">Events</h3>'+evs.map(evRow).join('');
+  if(el)el.innerHTML=html||'<p class="muted-note">No events or workshops scheduled yet — they will appear here once added.</p>';
+}
+renderContent();
+</script>
+</body>
+</html>
