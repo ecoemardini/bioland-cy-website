@@ -490,6 +490,7 @@ function mdToHtml(s){if(!s)return'';let h=s.replace(/&/g,'&amp;').replace(/</g,'
   h=h.replace(/!\[[^\]]*\]\(([^)]+)\)/g,'<img src="$1" alt="">');
   h=h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>');
   h=h.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  h=h.replace(/\\([^0-9A-Za-z\s])/g,'$1'); // unescape markdown backslash-escapes e.g. \# -> #
   return h.split(/\n{2,}/).map(b=>/^<(h3|img|ul|ol)/.test(b.trim())?b:'<p>'+b.replace(/\n/g,'<br>')+'</p>').join('');}
 let _curArt=null;
 function openArt(a){_curArt=a;
