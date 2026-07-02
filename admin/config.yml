@@ -10,14 +10,14 @@ backend:
   name: github
   repo: ecoemardini/bioland-cy-website
   branch: main
-  base_url: https://bioland-cy-website.pages.dev   # where the OAuth functions live
+  base_url: https://biolandcy.eu                   # where the OAuth functions live
   auth_endpoint: /api/login                        # Cloudflare Pages Function (302, no-cache)
 
 media_folder: "images"     # uploaded images + PDFs are stored here in the repo
 public_folder: "/images"   # ...and served from this URL path
 
-site_url: https://bioland-cy.eratosthenes.org.cy
-display_url: https://bioland-cy.eratosthenes.org.cy
+site_url: https://biolandcy.eu
+display_url: https://biolandcy.eu
 
 collections:
   # ---- NEWS (list of posts stored in one json file) ----
