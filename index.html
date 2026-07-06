@@ -180,12 +180,6 @@
     .contact-grid,.fgrid{grid-template-columns:1fr}
   }
 </style>
-<!-- MailerLite Universal (newsletter forms) -->
-<script>
-(function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[]).push(arguments);},l=d.createElement(e),l.async=1,l.src=u,n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})(window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-ml('account', '2487439');
-</script>
-<!-- End MailerLite Universal -->
 </head>
 <body>
 
@@ -443,14 +437,18 @@ ml('account', '2487439');
     <div>
       <div class="box" style="margin-bottom:20px"><h3 style="margin-top:0">Project Coordinator</h3><p style="margin:0"><strong>Dr Mahmoud Mardini</strong><br>Eratosthenes Centre of Excellence<br>Limassol, Cyprus</p></div>
       <div class="box"><h3 style="margin-top:0">Follow us</h3><p style="margin:0">LinkedIn · Facebook · Instagram</p></div>
+      <div class="box" style="margin-top:20px">
+        <h3 style="margin-top:0;color:var(--navy)">Newsletter</h3>
+        <p class="muted-note" style="margin:0 0 12px">Quarterly updates on our Earth-observation &amp; bioarchaeology research &mdash; datasets, maps and events. Unsubscribe anytime.</p>
+        <form id="nlForm" onsubmit="return blSubscribe(event)" style="display:flex;gap:10px;flex-wrap:wrap">
+          <input type="email" id="nlEmail" name="fields[email]" required placeholder="your@email.com" style="flex:1;min-width:180px;padding:11px;border:1px solid var(--line);border-radius:8px">
+          <button class="btn" type="submit" id="nlBtn" style="background:var(--ochre)">Subscribe</button>
+        </form>
+        <p id="nlMsg" style="margin:10px 0 0;font-size:14px;display:none"></p>
+      </div>
     </div>
   </div>
 </div></section>
-
-<!-- NEWSLETTER band: always visible (outside the .page sections) so the MailerLite JS embed renders reliably -->
-<div style="background:var(--bg);padding:54px 20px;border-top:1px solid var(--line)"><div class="wrap" style="max-width:640px;margin:0 auto;text-align:center">
-  <div class="ml-embedded" data-form="jv98op"></div>
-</div></div>
 
 <footer><div class="wrap">
   <div class="fgrid">
@@ -553,6 +551,9 @@ async function renderContent(){
   if(el)el.innerHTML=html||'<p class="muted-note">No events or workshops scheduled yet — they will appear here once added.</p>';
 }
 renderContent();
+</script>
+<script>
+function blSubscribe(e){e.preventDefault();var em=document.getElementById('nlEmail'),btn=document.getElementById('nlBtn'),msg=document.getElementById('nlMsg');var email=(em.value||'').trim();if(!email)return false;btn.disabled=true;btn.textContent='Subscribing...';var fd=new FormData();fd.append('fields[email]',email);fd.append('ml-submit','1');fd.append('anticsrf','true');fetch('https://assets.mailerlite.com/jsonp/2487439/forms/192226950526273108/subscribe',{method:'POST',body:fd,mode:'no-cors'}).then(fin).catch(fin);function fin(){msg.style.display='block';msg.style.color='#2e9e6b';msg.textContent='Thanks - you are now subscribed to the BIOLAND-Cy newsletter.';document.getElementById('nlForm').reset();btn.disabled=false;btn.textContent='Subscribe';}return false;}
 </script>
 </body>
 </html>
