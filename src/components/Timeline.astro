@@ -1,0 +1,20 @@
+---
+// 24 months as 24 pixels: elapsed months filled, this month in ochre, deliverable due months marked underneath.
+import { getDeliverables, currentMonth } from '../lib/content';
+const all = await getDeliverables();
+const now = Math.max(0, Math.min(24, currentMonth()));
+const due = new Map<number, string[]>();
+all.forEach((d) => due.set(d.data.due_month, [...(due.get(d.data.due_month) ?? []), d.data.code]));
+const done = all.filter((d) => ['submitted', 'published'].includes(d.data.status)).length;
+---
+<div>
+  <div class="timeline" data-timeline role="img" aria-label={`Project month ${now} of 24. ${done} of ${all.length} deliverables submitted.`}>
+    {Array.from({ length: 24 }, (_, i) => i + 1).map((m) => (
+      <span class="m" data-m={m} data-done={String(m < now)} data-now={String(m === now)} title={`M${m}${due.has(m) ? ': ' + due.get(m)!.join(', ') : ''}`}>
+        {due.has(m) && <span class="d"></span>}
+      </span>
+    ))}
+  </div>
+  <div class="timeline-axis"><span>M1 · Jul 2026</span><span>M7 · Jan 2027</span><span>M13 · Jul 2027</span><span>M19 · Jan 2028</span></div>
+  <p class="mono" style="margin-top:18px;color:#d2dcf1">■ elapsed &nbsp; <span style="color:var(--ochre)">■</span> now: month <span data-pm-n>{now}</span> of 24 &nbsp; <span style="color:var(--sky)">■</span> deliverable due &nbsp;·&nbsp; {done} of {all.length} submitted</p>
+</div>

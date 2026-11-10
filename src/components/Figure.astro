@@ -1,0 +1,27 @@
+---
+// A picture with a catalogue-style caption. AI images say "AI-generated image" in the caption (no icon on the picture: coordinator, 10 Nov 2026).
+import { Picture } from 'astro:assets';
+import type { Pic } from '../data/images';
+interface Props {
+  pic: Pic; widths?: number[]; sizes?: string; ratio?: string; priority?: boolean; caption?: boolean;
+  credit?: boolean; no?: string; class?: string; position?: string; rise?: boolean;
+}
+const { pic, widths = [480, 800, 1200, 1600], sizes = '(max-width: 900px) 100vw, 50vw', ratio, priority = false, caption = true,
+  credit = false, no, class: cls = '', position = 'center', rise = false } = Astro.props;
+const tail = [pic.recon ? 'Reconstruction based on published evidence' : '', pic.people ? 'the people are fictional' : ''].filter(Boolean).join('; ');
+---
+<figure class:list={['fig', !no && 'plain', cls]}>
+  <div class:list={['frame', rise && 'rise']} style={ratio ? `aspect-ratio:${ratio}` : undefined}>
+    <Picture src={pic.src} alt={pic.alt} widths={widths} sizes={sizes} formats={['avif', 'webp']}
+      loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : 'auto'} decoding="async" style={`object-position:${position}`} />
+  </div>
+  {caption && (
+    <figcaption>
+      {no && <span class="no">{no}</span>}
+      <span>
+        {pic.ai ? <><b>AI-generated image:</b> {pic.caption}.{tail && ` ${tail.charAt(0).toUpperCase() + tail.slice(1)}.`}</> : <><b>Real data:</b> {pic.caption}</>}
+        {credit && pic.credit && <> {pic.credit}</>}
+      </span>
+    </figcaption>
+  )}
+</figure>

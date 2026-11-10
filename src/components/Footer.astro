@@ -1,0 +1,53 @@
+---
+import site from '../data/site.json';
+const social = Object.entries(site.social).filter(([, u]) => u);
+const names: Record<string, string> = { instagram: 'Instagram', linkedin: 'LinkedIn', facebook: 'Facebook' };
+const year = new Date().getFullYear();
+---
+<footer class="a-foot">
+  <div class="a-wrap">
+    <div class="a-fgrid">
+      <div>
+        <a class="a-flogo" href="/" aria-label="BIOLAND-Cy home"><img src="/brand/BIOLAND-Cy_logo_hero_reversed.svg" alt="BIOLAND-Cy" width="291" height="54" loading="lazy" /></a>
+        <p>{site.footer_text}</p>
+      </div>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/research">Research</a></li>
+        <li><a href="/outputs">Outputs &amp; data</a></li>
+        <li><a href="/news">News &amp; events</a></li>
+        <li><a href="/about">About the project</a></li>
+      </ul>
+      <ul>
+        <li><a href="/contact">Write to us</a></li>
+        <li><a href={`mailto:${site.contact_email}`}>{site.contact_email}</a></li>
+        <li><a href="/contact#newsletter">Newsletter</a></li>
+        {social.map(([k, u]) => <li><a href={u} rel="me noopener">{names[k] ?? k}</a></li>)}
+      </ul>
+      <ul>
+        <li><a href="/privacy">Privacy policy</a></li>
+        <li><a href="/accessibility">Accessibility statement</a></li>
+        <li><a href="/about#image-credits">Image credits</a></li>
+        <li><a href="/admin/" rel="nofollow">Editor login</a></li>
+      </ul>
+    </div>
+
+    <section class="a-fund" aria-label="Funding">
+      <ul class="a-fund-logos">
+        <li class="eu"><img src="/brand/funders/EN_Co-fundedbytheEU_RGB_POS.svg" alt="Co-funded by the European Union" width="376" height="84" loading="lazy" /></li>
+        <li><img src="/brand/funders/Cyprus_Republic_logo_EN.svg" alt="Republic of Cyprus" width="100" height="80" loading="lazy" /></li>
+        <li><img src="/brand/funders/RIF_logo_EN_colour.svg" alt="Research and Innovation Foundation" width="180" height="80" loading="lazy" /></li>
+        <li><img src="/brand/funders/ECoE_logo_colour.svg" alt="ERATOSTHENES Centre of Excellence" width="114" height="80" loading="lazy" /></li>
+      </ul>
+      <div class="a-fund-text">
+        <p>{site.funding_en}</p>
+        <p lang="el">{site.funding_el}</p>
+      </div>
+    </section>
+
+    <div class="a-fbase">
+      <span>© {year} BIOLAND-Cy · ERATOSTHENES Centre of Excellence</span>
+      <button type="button" data-motion-toggle aria-pressed="false">Reduce motion</button>
+    </div>
+  </div>
+</footer>

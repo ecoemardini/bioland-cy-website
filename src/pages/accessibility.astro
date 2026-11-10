@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import site from '../data/site.json';
+const prepared = '27 October 2026';
+---
+<Base title="Accessibility statement" description="Accessibility statement for the BIOLAND-Cy website.">
+  <PageHead eyebrow="Legal" title="Accessibility statement" lead="We want everyone to be able to use this website, whatever device, browser or assistive technology they use." />
+  <div class="wrap-narrow prose section-tight" style="padding-top:0">
+    <h2>Compliance status</h2>
+    <p>This website aims to meet the Web Content Accessibility Guidelines (WCAG) 2.2, level AA. It is <strong>partially compliant</strong>: we have tested it with automated tools and keyboard checks, but a full manual audit with screen readers is still to be done.</p>
+
+    <h2>What we have done</h2>
+    <ul>
+      <li>Every page works with a keyboard alone, with a visible focus outline and a "Skip to content" link.</li>
+      <li>Text and controls meet colour-contrast requirements; buttons and menu links are at least 44 pixels tall.</li>
+      <li>Images have text alternatives; AI-generated pictures are labelled as such in their captions.</li>
+      <li>Animations respect the "reduce motion" setting of your device, and a "Reduce motion" switch at the bottom of every page turns them off. The 3D flight never plays with sound and can be paused.</li>
+      <li>The site follows your device's light or dark mode, can be zoomed to 400% and reflows on small screens.</li>
+      <li>All pages can be read without JavaScript.</li>
+    </ul>
+
+    <h2>Known limitations</h2>
+    <ul>
+      <li>Some PDF deliverables published before this statement may not be fully accessible. Ask us for an accessible version.</li>
+      <li>Satellite maps cannot be fully described in words; each has a short description and the underlying data will be published openly.</li>
+    </ul>
+
+    <h2>Feedback and contact</h2>
+    <p>If you find a barrier, please tell us: <a href={`mailto:${site.contact_email}`}>{site.contact_email}</a>. We aim to reply within five working days.</p>
+
+    <h2>Enforcement</h2>
+    <p>If you are not satisfied with our answer, you can contact the Office of the Commissioner of Electronic Communications and Postal Regulation (OCECPR), the authority that monitors web accessibility in Cyprus.</p>
+
+    <h2>Preparation of this statement</h2>
+    <p>This statement was prepared on {prepared} by self-assessment (automated tests with axe-core and Lighthouse, and manual keyboard checks). It will be reviewed at least once a year.</p>
+  </div>
+</Base>

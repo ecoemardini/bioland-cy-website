@@ -1,0 +1,33 @@
+---
+// News & events: one page for news posts, events and workshops (coordinator, 10 Nov 2026).
+// Upcoming events are pinned at the top; everything else follows, newest first.
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import NewsRow from '../../components/NewsRow.astro';
+import Newsletter from '../../components/Newsletter.astro';
+import { getNews, getAllEvents } from '../../lib/content';
+const all = await getNews();
+const { upcoming } = await getAllEvents();
+const rest = all.filter((p) => !upcoming.some((u) => u.id === p.id));
+---
+<Base title="News & events" description="News, events and workshops from BIOLAND-Cy: milestones, meetings, method explainers and the public GeoHub workshop.">
+  <PageHead eyebrow="News & events" n="§03" title="News & events"
+    lead="Project news, meetings and workshops. Upcoming events come first; slides and reports are added after each event." />
+  {upcoming.length > 0 && (
+    <section class="section-tight" style="padding-top:0" aria-labelledby="up-h">
+      <div class="wrap">
+        <h2 id="up-h" style="font-size:var(--step-3)">Coming up</h2>
+        <div class="index">{upcoming.map((e) => <NewsRow post={e} headingLevel="h3" />)}</div>
+      </div>
+    </section>
+  )}
+  <section class="section-tight" style={upcoming.length ? undefined : 'padding-top:0'} aria-labelledby="all-h">
+    <div class="wrap">
+      <h2 id="all-h" class:list={[!upcoming.length && 'visually-hidden']} style="font-size:var(--step-3)">Latest news and past events</h2>
+      {rest.length
+        ? <div class="index">{rest.map((p) => <NewsRow post={p} headingLevel="h3" />)}</div>
+        : <p class="muted">Nothing here yet. Subscribe to the <a href="#newsletter">newsletter</a> to hear first.</p>}
+    </div>
+  </section>
+  <section class="section"><div class="wrap" style="border-top:1px solid var(--line);padding-top:clamp(40px,6vw,72px)"><Newsletter /></div></section>
+</Base>

@@ -1,0 +1,353 @@
+---
+// Home page ("Night Orbit"): oversized headline over the real satellite image, a pointer lens onto a second data layer,
+// and the six layers as a 3D stack that scroll lifts apart. Styles: src/styles/orbit.css.
+import { Image, Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Plate from '../components/Plate.astro';
+import { IMG, LAYERS, COPERNICUS } from '../data/images';
+import site from '../data/site.json';
+import { getNews, getAllEvents, fmtDate, currentMonth, isEvent, isPast, TYPE_LABEL } from '../lib/content';
+import tooth from '../assets/icons/human_tooth_white.svg';
+import mouflon from '../assets/icons/mouflon_white.svg';
+import barley from '../assets/icons/barley_white.svg';
+import isotope from '../assets/icons/isotope_atom_white.svg';
+
+// "Latest": upcoming events first (soonest first), then the newest other entries; four in all
+const { upcoming } = await getAllEvents();
+const latest = [...upcoming.slice(0, 2), ...(await getNews()).filter((p) => !upcoming.some((u) => u.id === p.id))].slice(0, 4);
+const month = Math.min(24, Math.max(1, currentMonth()));
+const words = site.hero_title.trim().split(/\s+/);
+const h1 = words.length > 3 ? [words[0], words.slice(1, -2).join(' '), words.slice(-2).join(' ')] : [words.join(' ')];
+const base = LAYERS[0];
+const lensLayers = LAYERS.slice(1);
+const evidence = [
+  { icon: tooth, t: 'People', d: 'Age, health and diet of people from published burials. Pictograms only: no images of human remains.' },
+  { icon: mouflon, t: 'Animals', d: 'Sheep, goat, cattle, pig, deer and mouflon: herding, hunting and feasting.' },
+  { icon: barley, t: 'Plants', d: 'Charred seeds and grains: which crops were grown, stored and cooked.' },
+  { icon: isotope, t: 'Isotopes', d: 'Carbon and nitrogen indicate diet; strontium and oxygen indicate whether people grew up locally.' },
+];
+// Gallery: landscape, animals, plants and daily life, interleaved so neighbours differ. Every picture is shown whole (no cropping).
+const plates = [
+  { pic: IMG.aerial, k: 'life' }, { pic: IMG.mouflon, k: 'animals' }, { pic: IMG.foothills, k: 'land' }, { pic: IMG.potter, k: 'life' },
+  { pic: IMG.lentils, k: 'plants' }, { pic: IMG.saltlake, k: 'land' }, { pic: IMG.plough, k: 'life' }, { pic: IMG.deer, k: 'animals' },
+  { pic: IMG.olives, k: 'plants' }, { pic: IMG.bread, k: 'life' }, { pic: IMG.forest, k: 'land' }, { pic: IMG.goat, k: 'animals' },
+  { pic: IMG.donkey, k: 'life' }, { pic: IMG.carob, k: 'plants' }, { pic: IMG.threshing, k: 'life' }, { pic: IMG.cliffs, k: 'land' },
+  { pic: IMG.village, k: 'life' }, { pic: IMG.spinning, k: 'life' },
+];
+const kinds = [['all', 'All'], ['land', 'Landscape'], ['animals', 'Animals'], ['plants', 'Plants'], ['life', 'Daily life']];
+const ticker = ['24 months', 'Jul 2026 to Jun 2028', '5 open FAIR datasets', '0 new excavations', '19 deliverables', 'Data CC BY 4.0', 'Code MIT', 'Open-access papers'];
+---
+<Base>
+    <section class="a-hero" aria-labelledby="a-h1">
+      <p class="mono a-kick"><i class="dot" aria-hidden="true"></i>Sentinel-2 · 786 km · 15 Mar 2025 · Month {String(month).padStart(2, '0')} of 24</p>
+      <h1 id="a-h1">{h1.map((w, i) => <><span class:list={[i === h1.length - 1 && h1.length > 1 && 'hot']}>{w}</span>{' '}</>)}</h1>
+
+      <div class="a-island" data-lens>
+        <Image src={base.src} alt="The whole island of Cyprus in a Sentinel-2 satellite image of 15 March 2025." widths={[700, 1100, 1400]} sizes="(max-width: 900px) 100vw, 62vw" formats={['webp']} loading="eager" fetchpriority="high" />
+        {lensLayers.map((l, i) => (
+          <Image class:list={['a-rev', i === 0 && 'on']} data-k={l.key} src={l.src} alt="" widths={[700, 1100, 1400]} sizes="(max-width: 900px) 100vw, 62vw" formats={['webp']} loading={i === 0 ? 'eager' : 'lazy'} />
+        ))}
+        <div class="a-ring" aria-hidden="true"><span data-lens-label>{lensLayers[0].label}</span></div>
+      </div>
+
+      <div class="a-under">
+        <div>
+          <p class="a-lead">{site.hero_lead}</p>
+          <p class="a-cta"><a class="a-pill solid" href="#a-layers">See the six layers <span aria-hidden="true">↓</span></a><a class="a-pill" href="/about">About the project</a></p>
+        </div>
+        <div class="a-lensbar">
+          <p class="mono" id="a-lens-h">Inside the lens</p>
+          <div role="group" aria-labelledby="a-lens-h">
+            {lensLayers.map((l, i) => <button type="button" data-lens-btn={l.key} data-label={l.label} aria-pressed={i === 0 ? 'true' : 'false'}>{l.label}</button>)}
+          </div>
+          <p class="mono dim">Move across the island. Every pixel is a real measurement.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="a-ticker" aria-hidden="true"><div>{[...ticker, ...ticker].map((t) => <span>{t}<i></i></span>)}</div></div>
+    <ul class="vh">{ticker.map((t) => <li>{t}</li>)}</ul>
+
+    <section class="a-layers" id="a-layers" aria-labelledby="a-l-h" data-scrolly>
+      <div class="a-wrap a-sec-head">
+        <p class="mono"><b>02</b> Six layers of real data</p>
+        <h2 id="a-l-h">One island, read six ways</h2>
+      </div>
+      <div class="a-wrap a-lgrid">
+        <div class="a-steps">
+          {LAYERS.map((l, i) => (
+            <article class="a-step" data-step={i}>
+              <p class="mono"><b>{String(i + 1).padStart(2, '0')}</b> / 06 · {l.label}</p>
+              <Image class="a-step-img" src={l.src} alt={`${l.label}: map of the whole island of Cyprus`} widths={[480, 800]} sizes="100vw" formats={['webp']} loading="lazy" />
+              <h3>{l.title}</h3>
+              <p>{l.text}</p>
+              <p class="mono dim">Data · {l.data}</p>
+            </article>
+          ))}
+        </div>
+        <div class="a-sticky" aria-hidden="true">
+          <div class="a-scene">
+            <div class="a-rig" data-rig>
+              {LAYERS.map((l, i) => (
+                <div class="a-layer" data-l={i}>
+                  <Image src={l.src} alt="" widths={[700, 1000, 1400]} sizes="55vw" formats={['webp']} loading="lazy" draggable="false" />
+                  <span class="a-tag">{String(i + 1).padStart(2, '0')} · {l.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p class="mono dim a-drag">Drag to turn the stack</p>
+          <p class="a-num" data-num>01</p>
+          <div class="a-dots">{LAYERS.map((_, i) => <i class:list={[i === 0 && 'on']} data-dot={i}></i>)}</div>
+        </div>
+      </div>
+      <p class="a-wrap mono dim a-credit">{COPERNICUS} Sentinel-1 coherence: Kellndorfer et al. 2022 (CC BY 4.0). Lakes: JRC Global Surface Water. Maps: BIOLAND-Cy / ERATOSTHENES Centre of Excellence.</p>
+    </section>
+
+    <section class="a-ev" aria-labelledby="a-e-h">
+      <div class="a-wrap a-sec-head">
+        <p class="mono"><b>03</b> Below ground · the published record</p>
+        <h2 id="a-e-h">Four kinds of evidence, already published</h2>
+      </div>
+      <ul class="a-wrap a-evlist">
+        {evidence.map((e, i) => (
+          <li>
+            <span class="mono">EV-{String(i + 1).padStart(2, '0')}</span>
+            <h3>{e.t}</h3>
+            <p>{e.d}</p>
+            <Image src={e.icon} alt="" width={72} height={72} />
+          </li>
+        ))}
+      </ul>
+      <p class="a-wrap a-manifesto">No new excavation. No new sampling. <span class="hot">Open science from open evidence.</span></p>
+    </section>
+
+    <section class="a-film" aria-labelledby="a-f-h">
+      <div class="a-wrap a-sec-head">
+        <p class="mono"><b>04</b> Terrain · 1 km above the foothills</p>
+        <h2 id="a-f-h">Terrain shapes every journey</h2>
+      </div>
+      <div class="a-wrap">
+        <!-- Two flights on the same camera path: the real data (left) and an AI reconstruction (right), behind a drag divider.
+             data-end: both loop at this second (both clips are 9 s). -->
+        <figure class="a-flyover" data-flyover data-end="9" aria-describedby="a-f-cap">
+          <div class="fo-stage">
+            <video class="fo-real" muted playsinline preload="metadata" poster="/media/flight-troodos-poster.jpg">
+              <source src="/media/flight-troodos-720.webm" type="video/webm" />
+              <source src="/media/flight-troodos-720.mp4" type="video/mp4" />
+            </video>
+            <div class="fo-ai">
+              <video muted playsinline preload="metadata" poster="/media/flyover-ai-final-720-poster.jpg">
+                <source src="/media/flyover-ai-final-720.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <span class="fo-line" aria-hidden="true"><i>↔</i></span>
+            <span class="fo-tag l" aria-hidden="true">Real data</span>
+            <span class="fo-tag r" aria-hidden="true">AI reconstruction</span>
+            <input type="range" min="0" max="100" value="50" aria-label="Divider between the real-data flight (left) and the AI reconstruction (right)" />
+          </div>
+          <div class="fo-bar">
+            <button type="button" data-fo-play aria-pressed="false">▶ Play both flights</button>
+            <span class="mono dim">Drag the divider, or use the arrow keys, to compare</span>
+          </div>
+          <figcaption id="a-f-cap" class="fo-cap">
+            <p><b>Left · Real data, no sound.</b> A nine-second flight towards the Troodos, rendered by BIOLAND-Cy from the Sentinel-2 image of 15 March 2025 draped on the Copernicus DEM. Contains modified Copernicus Sentinel data (2025).</p>
+            <p><b>Right · AI-generated video:</b> the same flight reimagined as the landscape may have looked around 3000 BC, with farming villages of round houses, their people and their flocks. Reconstruction based on published evidence; the people are fictional. An interpretation, not a record of the past.</p>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="a-life" aria-labelledby="a-g-h">
+      <div class="a-wrap a-sec-head">
+        <p class="mono"><b>05</b> Reconstructions</p>
+        <h2 id="a-g-h">Life in the ancient landscape</h2>
+        <p class="a-note">Illustrations made with AI and checked against published evidence. They are interpretations, not photographs of the past, and each one is labelled.</p>
+      </div>
+      <div class="a-wrap a-galbar" data-gallery>
+        <div class="a-chips" role="group" aria-label="Show pictures of">
+          {kinds.map(([k, l], i) => <button type="button" data-kind={k} aria-pressed={i === 0 ? 'true' : 'false'}>{l}</button>)}
+        </div>
+        <div class="a-arrows">
+          <button type="button" data-dir="-1" aria-label="Previous pictures">←</button>
+          <button type="button" data-dir="1" aria-label="Next pictures">→</button>
+        </div>
+      </div>
+      <div class="a-track" data-track tabindex="0" aria-label="Reconstruction pictures, scrollable">
+        {plates.map((p, i) => <Plate pic={p.pic} kind={p.k} no={`PL. ${String(i + 1).padStart(2, '0')}`} />)}
+      </div>
+    </section>
+
+    <section class="a-news" aria-labelledby="a-n-h">
+      <div class="a-wrap a-sec-head">
+        <p class="mono"><b>06</b> Latest</p>
+        <h2 id="a-n-h">News and events</h2>
+      </div>
+      <div class="a-wrap a-rows">
+        {latest.map((p) => (
+          <a class="a-row" href={`/news/${p.id}`}>
+            <span class="mono">{isEvent(p) ? `${isPast(p) ? 'Past' : 'Upcoming'} ${TYPE_LABEL[p.data.type].toLowerCase()}` : 'News'} · {fmtDate(p.data.date, { day: '2-digit', month: 'short', year: 'numeric' })}{isEvent(p) && p.data.time && ` · ${p.data.time}`}</span>
+            <h3>{p.data.title}{isEvent(p) && p.data.location && <small> · {p.data.location}</small>}</h3>
+            <span class="thumb">
+              {p.data.cover
+                ? <Picture src={p.data.cover} alt={p.data.cover_alt ?? ''} widths={[360, 560, 800]} sizes="(max-width: 900px) 92vw, 280px" formats={['avif', 'webp']} loading="lazy" />
+                : <Image class="fallback" src={base.src} alt="" widths={[360, 560]} sizes="280px" formats={['webp']} loading="lazy" />}
+            </span>
+            <span class="arr" aria-hidden="true">↗</span>
+          </a>
+        ))}
+        <p class="a-more"><a class="a-pill" href="/news">All news &amp; events <span aria-hidden="true">→</span></a></p>
+      </div>
+    </section>
+</Base>
+
+<script>
+  const root = document.documentElement;
+  const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches || root.dataset.motion === 'off';
+
+  // Lens: follows the pointer; drifts slowly until the visitor first touches it.
+  const lens = document.querySelector<HTMLElement>('[data-lens]');
+  if (lens) {
+    let touched = false;
+    const put = (x: number, y: number) => { lens.style.setProperty('--x', `${x}px`); lens.style.setProperty('--y', `${y}px`); };
+    const drift = (t: number) => {
+      if (touched || still()) return;
+      const r = lens.getBoundingClientRect(); const p = t / 1000;
+      put(r.width * (0.47 + 0.27 * Math.sin(p * 0.42)), r.height * (0.58 + 0.17 * Math.sin(p * 0.67 + 1.2)));
+      requestAnimationFrame(drift);
+    };
+    requestAnimationFrame(drift);
+    lens.addEventListener('pointermove', (e) => { touched = true; const r = lens.getBoundingClientRect(); put(e.clientX - r.left, e.clientY - r.top); });
+    lens.addEventListener('pointerdown', (e) => { touched = true; const r = lens.getBoundingClientRect(); put(e.clientX - r.left, e.clientY - r.top); });
+    const label = document.querySelector<HTMLElement>('[data-lens-label]');
+    const btns = [...document.querySelectorAll<HTMLButtonElement>('[data-lens-btn]')];
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      lens.querySelectorAll<HTMLElement>('.a-rev').forEach((im) => im.classList.toggle('on', im.dataset.k === b.dataset.lensBtn));
+      if (label) label.textContent = b.dataset.label ?? '';
+    }));
+  }
+
+  // Six layers: the step nearest the middle of the screen selects the layer in the pinned view.
+  const sc = document.querySelector<HTMLElement>('[data-scrolly]');
+  if (sc && 'IntersectionObserver' in window) {
+    const dots = [...sc.querySelectorAll<HTMLElement>('[data-dot]')];
+    const num = sc.querySelector<HTMLElement>('[data-num]');
+    const steps = [...sc.querySelectorAll<HTMLElement>('.a-step')];
+    const view = sc.querySelector<HTMLElement>('.a-sticky')!;
+    const rig = sc.querySelector<HTMLElement>('[data-rig]')!;
+    const layers = [...rig.querySelectorAll<HTMLElement>('[data-l]')];
+    const N = layers.length;
+    const clamp = (x: number) => Math.min(1, Math.max(0, x));
+    // The 3D stack: targets come from scroll and drag; current values ease towards them every frame.
+    const T = { rx: 58, rz: -24, lift: 0, z: new Array(N).fill(0), o: new Array(N).fill(1), tag: new Array(N).fill(0) };
+    const C = { rx: 58, rz: -24, lift: 0, z: new Array(N).fill(0), o: new Array(N).fill(1), tag: new Array(N).fill(0) };
+    let dragZ = 0, dragX = 0, running = false, visible = false, used = false, act = -1;
+
+    const target = () => {
+      const vh = window.innerHeight;
+      const e = clamp((0.95 * vh - steps[0].getBoundingClientRect().top) / (0.55 * vh));   // the stack opens
+      let v = 0;
+      for (let i = 1; i < N; i++) v += clamp((0.72 * vh - steps[i].getBoundingClientRect().top) / (0.42 * vh));
+      const gap = 9 + 41 * e;
+      for (let i = 0; i < N; i++) {
+        const up = clamp(v - i) * e;                                                        // layers above the current one lift away
+        T.z[i] = ((N - 1) / 2 - i) * gap + up * 230;
+        T.o[i] = 1 - up;
+        T.tag[i] = e * Math.max(0, 1 - Math.abs(v - i) * 1.6);
+      }
+      T.lift = v * gap * 0.5;
+      T.rx = Math.max(30, Math.min(74, 58 + dragX));
+      T.rz = -24 + dragZ;
+      const now = Math.round(v);
+      if (now !== act) {
+        act = now;
+        steps.forEach((s, k) => s.classList.toggle('on', k === now));
+        dots.forEach((d, k) => d.classList.toggle('on', k === now));
+        if (num) num.textContent = String(now + 1).padStart(2, '0');
+      }
+      if (!running) { running = true; requestAnimationFrame(frame); }
+    };
+    const frame = (t: number) => {
+      const k = still() ? 1 : 0.11;
+      let moving = false;
+      const ease = (c: number, g: number) => { const d = g - c; if (Math.abs(d) > 0.02) moving = true; return c + d * k; };
+      C.rx = ease(C.rx, T.rx); C.rz = ease(C.rz, T.rz); C.lift = ease(C.lift, T.lift);
+      const sway = still() || used ? 0 : Math.sin(t / 2600) * 3.5;
+      rig.style.transform = `translateZ(${C.lift.toFixed(1)}px) rotateX(${C.rx.toFixed(2)}deg) rotateZ(${(C.rz + sway).toFixed(2)}deg)`;
+      for (let i = 0; i < N; i++) {
+        C.z[i] = ease(C.z[i], T.z[i]); C.o[i] = ease(C.o[i], T.o[i]); C.tag[i] = ease(C.tag[i], T.tag[i]);
+        layers[i].style.transform = `translateZ(${C.z[i].toFixed(1)}px)`;
+        layers[i].style.opacity = C.o[i].toFixed(3);
+        layers[i].style.setProperty('--tag', C.tag[i].toFixed(3));
+      }
+      if (visible && (moving || sway !== 0)) requestAnimationFrame(frame); else running = false;
+    };
+    window.addEventListener('scroll', target, { passive: true });
+    window.addEventListener('resize', target);
+    new IntersectionObserver((es) => { visible = es[0].isIntersecting; if (visible) target(); }).observe(sc);
+
+    // drag to turn the stack
+    let sx = 0, sy = 0, z0 = 0, x0 = 0, down = false;
+    view.addEventListener('pointerdown', (e) => { down = true; used = true; sx = e.clientX; sy = e.clientY; z0 = dragZ; x0 = dragX; view.setPointerCapture(e.pointerId); view.classList.add('grab'); });
+    view.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      dragZ = Math.max(-75, Math.min(75, z0 + (e.clientX - sx) * 0.22));
+      dragX = Math.max(-26, Math.min(16, x0 + (sy - e.clientY) * 0.12));
+      target();
+    });
+    const end = () => { down = false; view.classList.remove('grab'); };
+    view.addEventListener('pointerup', end); view.addEventListener('pointercancel', end);
+    target();
+  }
+
+  // Flyover: both videos play in step; the divider reveals one or the other. Plays when first in view (not with reduced motion).
+  const fo = document.querySelector<HTMLElement>('[data-flyover]');
+  if (fo) {
+    const real = fo.querySelector<HTMLVideoElement>('.fo-real')!;
+    const ai = fo.querySelector<HTMLVideoElement>('.fo-ai video')!;
+    const range = fo.querySelector<HTMLInputElement>('input[type=range]')!;
+    const btn = fo.querySelector<HTMLButtonElement>('[data-fo-play]')!;
+    const END = Number(fo.dataset.end) || 9;
+    let raf = 0;
+    range.addEventListener('input', () => fo.style.setProperty('--p', `${range.value}%`));
+    const label = () => { const on = playing && !real.paused; btn.textContent = on ? '❚❚ Pause' : '▶ Play both flights'; btn.setAttribute('aria-pressed', String(on)); };
+    let playing = false;
+    // both restart together at END (or when either clip ends), so the pair always loops in step
+    const restart = () => { real.currentTime = 0; ai.currentTime = 0; if (playing) { real.play().catch(() => {}); ai.play().catch(() => {}); } };
+    const tick = () => {
+      if (real.currentTime >= END - 0.05) restart();
+      else if (Math.abs(ai.currentTime - real.currentTime) > 0.08) ai.currentTime = real.currentTime;
+      if (playing) raf = requestAnimationFrame(tick);
+    };
+    const play = async () => { playing = true; try { await Promise.all([real.play(), ai.play()]); } catch { /* blocked: wait for a click */ } label(); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); };
+    const pause = () => { playing = false; real.pause(); ai.pause(); cancelAnimationFrame(raf); label(); };
+    btn.addEventListener('click', () => (playing ? pause() : play()));
+    real.addEventListener('timeupdate', () => { if (playing && real.currentTime >= END - 0.05) restart(); });
+    real.addEventListener('ended', restart);
+    ai.addEventListener('ended', restart);
+    if (!still() && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => {
+        if (e.isIntersecting && !fo.dataset.played) { fo.dataset.played = '1'; play(); }
+        else if (!e.isIntersecting && playing) pause();
+      }), { threshold: 0.5 });
+      io.observe(fo);
+    }
+  }
+
+  // Gallery: filter by theme, and previous / next buttons as an alternative to swiping (WCAG 2.5.7)
+  const bar = document.querySelector<HTMLElement>('[data-gallery]');
+  const track = document.querySelector<HTMLElement>('[data-track]');
+  if (bar && track) {
+    const chips = [...bar.querySelectorAll<HTMLButtonElement>('[data-kind]')];
+    chips.forEach((c) => c.addEventListener('click', () => {
+      chips.forEach((x) => x.setAttribute('aria-pressed', String(x === c)));
+      track.querySelectorAll<HTMLElement>('[data-kind]').forEach((p) => { p.hidden = c.dataset.kind !== 'all' && p.dataset.kind !== c.dataset.kind; });
+      track.scrollTo({ left: 0, behavior: 'auto' });
+    }));
+    bar.querySelectorAll<HTMLButtonElement>('[data-dir]').forEach((b) => b.addEventListener('click', () => {
+      track.scrollBy({ left: Number(b.dataset.dir) * Math.max(320, track.clientWidth * 0.7), behavior: still() ? 'auto' : 'smooth' });
+    }));
+  }
+</script>
+

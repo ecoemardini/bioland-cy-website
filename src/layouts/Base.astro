@@ -1,0 +1,85 @@
+---
+import '../styles/global.css';
+import '@fontsource-variable/bricolage-grotesque/wdth.css';
+import '../styles/orbit.css';
+import FunderBar from '../components/FunderBar.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Altimeter from '../components/Altimeter.astro';
+import site from '../data/site.json';
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  jsonld?: Record<string, unknown>[];
+  bodyClass?: string;
+  altimeter?: boolean;
+}
+const { title, description = site.description, image = '/og-image.jpg', type = 'website', jsonld = [], bodyClass, altimeter = false } = Astro.props;
+const fullTitle = title ? `${title} · BIOLAND-Cy` : `BIOLAND-Cy · ${site.long_title}`;
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/'), Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+const org = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchProject',
+  name: 'BIOLAND-Cy',
+  alternateName: site.long_title,
+  url: 'https://biolandcy.eu/',
+  logo: 'https://biolandcy.eu/android-chrome-512.png',
+  description: site.description,
+  foundingDate: site.start,
+  identifier: site.project_code,
+  parentOrganization: { '@type': 'ResearchOrganization', name: 'ERATOSTHENES Centre of Excellence', url: 'https://eratosthenes.org.cy' },
+  funder: [
+    { '@type': 'FundingAgency', name: 'Research and Innovation Foundation', url: 'https://www.research.org.cy' },
+    { '@type': 'GovernmentOrganization', name: 'European Union' },
+  ],
+  funding: { '@type': 'Grant', identifier: site.project_code, name: 'THALIA 2021–2027, Research and Innovation Foundation' },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#06080c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <slot name="head" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="BIOLAND-Cy" />
+    <meta property="og:title" content={title ?? 'BIOLAND-Cy · Reading ancient Cyprus from orbit'} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      // runs before paint: JS flag and the visitor's motion choice
+      (function () {
+        var d = document.documentElement; d.classList.add('js');
+        try { if (localStorage.getItem('bl-motion') === 'off') d.setAttribute('data-motion', 'off'); } catch (e) {}
+      })();
+    </script>
+    <script type="application/ld+json" set:html={JSON.stringify([org, ...jsonld])} />
+  </head>
+  <body class:list={['pa', bodyClass]}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <FunderBar />
+    <Header />
+    {altimeter && <Altimeter />}
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>

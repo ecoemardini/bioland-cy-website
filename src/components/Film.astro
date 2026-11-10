@@ -1,0 +1,24 @@
+---
+// The real-data flight into the Troodos with its own telemetry (altitude, heading) as an instrument read-out.
+import { getImage } from 'astro:assets';
+import { IMG } from '../data/images';
+import flight from '../data/flight.json';
+const poster = await getImage({ src: IMG.eo3d1.src, width: 1600, format: 'webp' });
+---
+<figure class="fig plain" style="margin:0">
+  <div class="film" data-film data-telemetry={JSON.stringify(flight)}>
+    <video muted playsinline preload="none" poster={poster.src} aria-describedby="film-cap">
+      <source src="/media/flight-troodos-720.webm" type="video/webm" />
+      <source src="/media/flight-troodos-720.mp4" type="video/mp4" />
+    </video>
+    <div class="hud" aria-hidden="true">
+      <i></i><i></i><i></i><i></i>
+      <span class="tl">Sentinel-2 L2A · 2025-03-15<br />Copernicus DEM GLO-30</span>
+      <span class="tr">ALT <b data-t-alt>1,008</b> m<br />HDG <b data-t-hdg>212</b>°</span>
+      <span class="bl">Real data · no sound</span>
+      <span class="br">T+<b data-t-t>0.0</b> s</span>
+    </div>
+    <button class="ctrl" type="button" data-film-ctrl>▶ Play the flight</button>
+  </div>
+  <figcaption id="film-cap">A nine-second flight towards the Troodos, rendered by BIOLAND-Cy from the Sentinel-2 image of 15 March 2025 draped on the Copernicus DEM. Contains modified Copernicus Sentinel data (2025). Altitude is above sea level.</figcaption>
+</figure>

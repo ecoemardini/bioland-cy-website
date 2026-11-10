@@ -1,0 +1,24 @@
+---
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/research', label: 'Research' },
+  { href: '/outputs', label: 'Outputs' },
+  { href: '/news', label: 'News & events' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+const current = (h: string) => (path === h || (h !== '/' && path.startsWith(h + '/')) ? 'page' : undefined);
+---
+<header class="a-head" data-header>
+  <a class="a-brand" href="/" aria-label="BIOLAND-Cy home">
+    <img src="/brand/BIOLAND-Cy_logo_hero_reversed.svg" alt="BIOLAND-Cy" width="291" height="54" />
+  </a>
+  <nav id="site-nav" aria-label="Main" data-nav>
+    <ul>{links.map((l) => <li><a href={l.href} aria-current={current(l.href)}>{l.label}</a></li>)}</ul>
+  </nav>
+  <a class="a-pill hot a-news-cta" href="/contact#newsletter">Newsletter <span aria-hidden="true">↗</span></a>
+  <button class="a-menu" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-btn>
+    <span class="bars" aria-hidden="true"></span> Menu
+  </button>
+</header>

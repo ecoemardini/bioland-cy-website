@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import site from '../data/site.json';
+const updated = '10 November 2026';
+---
+<Base title="Privacy policy" description="How the BIOLAND-Cy website handles personal data.">
+  <PageHead eyebrow="Legal" title="Privacy policy" lead={`How this website handles personal data, in line with the EU General Data Protection Regulation (GDPR). Last updated ${updated}.`} />
+  <div class="wrap-narrow prose section-tight" style="padding-top:0">
+    <h2>Who is responsible</h2>
+    <p>The data controller is the <strong>ERATOSTHENES Centre of Excellence</strong>, Limassol, Cyprus, which runs the BIOLAND-Cy project ({site.project_code}). To ask about your data or exercise your rights, write to the project coordinator at <a href={`mailto:${site.contact_email}`}>{site.contact_email}</a>; we involve the Centre's Data Protection Officer where needed.</p>
+
+    <h2>What this website does not do</h2>
+    <p>We do not use advertising, tracking cookies or social media plug-ins. The fonts are stored on our own server, so your browser does not contact a font service. No cookies are set when you read the site.</p>
+
+    <h2 id="statistics">Visitor statistics</h2>
+    <p>To report how many people the website reaches, as our funder requires, we use Cloudflare Web Analytics. When you open a page, a small script from Cloudflare (static.cloudflareinsights.com) counts the visit and measures how quickly the page loads. It sets no cookies, stores nothing on your device and does not identify or follow you. Cloudflare receives your IP address in order to deliver the count, discards it straight away and does not use it to identify you. We see only totals: number of visits, pages read, the website you came from, browser type and country. Detailed records are kept for 7 days and then reduced to summaries, which we can view for six months. Legal basis: our legitimate interest in measuring the reach of a publicly funded project (GDPR Art. 6(1)(f)). Ad blockers may block the script; the website works normally either way.</p>
+
+    <h2 id="newsletter">Newsletter</h2>
+    <ul>
+      <li><strong>What:</strong> your e-mail address, the time you subscribed, and whether you open the e-mails.</li>
+      <li><strong>Why and legal basis:</strong> to send you the BIOLAND-Cy newsletter, about every six months, based on your consent (GDPR Art. 6(1)(a)). You subscribe by entering your address in the form on this website.</li>
+      <li><strong>Who processes it for us:</strong> MailerLite (MailerLite Limited and MailerLite, Inc.), our e-mail service, under a data processing agreement. Data is hosted in the EU; transfers to the USA are covered by the EU Standard Contractual Clauses.</li>
+      <li><strong>How long:</strong> until you unsubscribe, and at the latest until the newsletter ends after the project. You can unsubscribe at any time with the link in every e-mail.</li>
+    </ul>
+
+    <h2 id="contact">Contact form</h2>
+    <ul>
+      <li><strong>What:</strong> your name, e-mail address and message.</li>
+      <li><strong>Why and legal basis:</strong> to answer you (GDPR Art. 6(1)(f), our legitimate interest in replying to enquiries).</li>
+      <li><strong>Who processes it for us:</strong> the form is delivered by e-mail through FormSubmit (formsubmit.co), a third-party form service that may process data outside the EU. If you prefer, write to us directly at <a href={`mailto:${site.contact_email}`}>{site.contact_email}</a>.</li>
+      <li><strong>How long:</strong> only as long as needed to deal with your message.</li>
+    </ul>
+
+    <h2 id="hosting">Hosting and security</h2>
+    <p>The website is hosted by Cloudflare, which processes technical data such as IP addresses to deliver the pages and protect them against attacks (GDPR Art. 6(1)(f)). Visitor numbers are described under <a href="#statistics">Visitor statistics</a>. The editing area at /admin uses GitHub sign-in for project staff only.</p>
+
+    <h2>Links and embedded content</h2>
+    <p>Links to social media and other sites take you to services with their own privacy policies. We do not load social media content until you choose to open it.</p>
+
+    <h2>Your rights</h2>
+    <p>You can ask for access to, correction or deletion of your data, restriction of or objection to processing, and data portability, and you can withdraw consent at any time. You can also complain to the <a href="https://www.dataprotection.gov.cy" rel="noopener">Commissioner for Personal Data Protection</a> in Cyprus.</p>
+  </div>
+</Base>

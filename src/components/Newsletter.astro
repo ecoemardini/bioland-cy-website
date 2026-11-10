@@ -1,0 +1,25 @@
+---
+import site from '../data/site.json';
+interface Props { id?: string }
+const { id = 'newsletter' } = Astro.props;
+const fid = `${id}-email`;
+---
+<section id={id} class="newsletter" aria-labelledby={`${id}-h`}>
+  <div>
+    <p class="eyebrow">Newsletter</p>
+    <h2 id={`${id}-h`} style="font-size:var(--step-3);margin:0 0 14px">Project news by e-mail</h2>
+    <p class="muted" style="margin:0;max-width:52ch">{site.newsletter_text}</p>
+  </div>
+  <form data-newsletter action="https://assets.mailerlite.com/jsonp/2487439/forms/192226950526273108/subscribe" method="post" novalidate>
+    <div class="row">
+      <div class="field" style="flex:1 1 240px;margin:0">
+        <label for={fid}>E-mail address</label>
+        <input class="input" id={fid} type="email" name="fields[email]" autocomplete="email" required placeholder="name@example.org" />
+      </div>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn" type="submit">Subscribe <span class="arrow" aria-hidden="true">→</span></button>
+    </div>
+    <p class="form-note" style="margin-top:14px">You can unsubscribe at any time with the link in every e-mail. MailerLite sends the newsletter for us; see the <a href="/privacy#newsletter">privacy policy</a>.</p>
+    <p class="form-msg" data-msg role="status" hidden></p>
+  </form>
+</section>

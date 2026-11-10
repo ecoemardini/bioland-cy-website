@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# local secrets and tooling: never commit
+.dev.vars
+.env
+.env.*
+.wrangler/
+passwords*.txt

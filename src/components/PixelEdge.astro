@@ -1,0 +1,17 @@
+---
+// Pixel dissolve between two chapters: the logo's square grid breaking up, like the hero image.
+interface Props { from: string; to: string; seed?: number; rows?: number; flip?: boolean }
+const { from, to, seed = 7, rows = 5, flip = false } = Astro.props;
+const cols = 60, c = 24;
+let s = seed;
+const rnd = () => ((s = (s * 16807) % 2147483647) / 2147483647);
+const cells: string[] = [];
+for (let r = 0; r < rows; r++) {
+  const p = (r + 0.5) / rows; // share of "from" squares falls row by row
+  for (let k = 0; k < cols; k++) if (rnd() > p) cells.push(`<rect x="${k * c + 1}" y="${r * c + 1}" width="${c - 2}" height="${c - 2}"/>`);
+}
+---
+<svg class="pixel-edge" viewBox={`0 0 ${cols * c} ${rows * c}`} aria-hidden="true" focusable="false"
+  style={`background:${to};${flip ? 'transform:scaleY(-1);' : ''}`}>
+  <g fill={from} set:html={cells.join('')} />
+</svg>

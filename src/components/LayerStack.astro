@@ -1,0 +1,43 @@
+---
+// Signature object: the six whole-island layers as a stack seen in 3D. Each text step lifts its layer.
+// Phones, reduced motion and no-JS get the same content as a plain sequence of maps and texts.
+import { Image } from 'astro:assets';
+import { LAYERS } from '../data/images';
+---
+<section class="stack-sec on-dark graticule" data-stack data-alt="100 km · six layers" aria-labelledby="stack-h">
+  <div class="wrap" style="padding-top:clamp(72px,10vw,140px)">
+    <p class="eyebrow"><span class="n">02</span> Six layers of real data</p>
+    <div class="sec-head" style="margin-bottom:0">
+      <h2 id="stack-h" style="color:#fff">One island, read six ways</h2>
+      <p class="lead">The same frame every time, all from the European Union's Copernicus programme. Scroll to lift each layer out of the stack.</p>
+    </div>
+    <p class="mono" style="margin-top:18px"><a href="#descent">Skip the layers ↓</a></p>
+  </div>
+  <div class="wrap stack-grid">
+    <div class="stack-steps">
+      {LAYERS.map((l, i) => (
+        <div class="stack-step" data-step={i}>
+          <span class="k"><span>Layer {String(i + 1).padStart(2, '0')} / 06</span><span>{l.label}</span></span>
+          <Image class="step-img" src={l.src} alt={`${l.label}: map of the whole island of Cyprus`} widths={[480, 800]} sizes="100vw" formats={['webp']} loading="lazy" />
+          <h3>{l.title}</h3>
+          <p>{l.text}</p>
+          <span class="data">Data · {l.data}</span>
+        </div>
+      ))}
+    </div>
+    <div class="stack-view" aria-hidden="true">
+      <div class="stack-3d" data-stack-3d>
+        {LAYERS.map((l, i) => (
+          <div class="layer" data-layer={i} style={`transform: translateZ(${(LAYERS.length - 1 - i) * 26}px)`}>
+            <Image src={l.src} alt="" widths={[700, 1000, 1400]} sizes="(max-width: 900px) 100vw, 60vw" formats={['webp']} loading="lazy" />
+          </div>
+        ))}
+      </div>
+      <div class="stack-progress">{LAYERS.map(() => <span data-dot />)}</div>
+      <span class="stack-legend" data-stack-legend>{LAYERS[0].label}</span>
+    </div>
+  </div>
+  <p class="wrap mono" style="color:#7d8eaa;padding-bottom:48px;line-height:1.7;text-transform:none;letter-spacing:.02em">
+    Contains modified Copernicus Sentinel data (2025). Copernicus DEM GLO-30 © DLR e.V. 2010–2014 and © Airbus Defence and Space GmbH 2014–2018, provided under COPERNICUS by the European Union and ESA. Sentinel-1 coherence: Kellndorfer et al. 2022 (CC BY 4.0). Lakes: JRC Global Surface Water. Maps: BIOLAND-Cy / ERATOSTHENES Centre of Excellence.
+  </p>
+</section>

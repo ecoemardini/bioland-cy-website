@@ -1,0 +1,61 @@
+---
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import NewsRow from '../../components/NewsRow.astro';
+import { getNews, fmtDate, isoDate, isEvent, isPast, TYPE_LABEL } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const news = await getNews();
+  return news.map((post) => ({ params: { slug: post.id }, props: { post, more: news.filter((n) => n.id !== post.id).slice(0, 3) } }));
+}
+const { post, more } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+const ev = isEvent(post);
+const past = ev && isPast(post);
+const fmtLong = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' } as const;
+const jsonld = [ev
+  ? { '@context': 'https://schema.org', '@type': 'Event', name: d.title, startDate: isoDate(d.date) + (d.time ? `T${d.time.padStart(5, '0')}` : ''),
+      endDate: d.end_date ? isoDate(d.end_date) : undefined, description: d.summary,
+      eventAttendanceMode: d.format === 'online' ? 'https://schema.org/OnlineEventAttendanceMode' : d.format === 'hybrid' ? 'https://schema.org/MixedEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+      location: d.location ? { '@type': 'Place', name: d.location } : undefined, organizer: { '@type': 'Organization', name: 'BIOLAND-Cy' } }
+  : { '@context': 'https://schema.org', '@type': 'NewsArticle', headline: d.title, datePublished: isoDate(d.date),
+      description: d.summary, publisher: { '@type': 'Organization', name: 'BIOLAND-Cy' } }];
+---
+<Base title={d.title} description={d.summary} type="article" jsonld={jsonld} image={d.cover ? d.cover.src : undefined}>
+  <article>
+    <header class="page-head" style="padding-bottom:24px">
+      <div class="wrap-narrow">
+        <p class="breadcrumb"><a href="/news">← All news &amp; events</a></p>
+        <p class="eyebrow">{ev ? `${past ? 'Past' : 'Upcoming'} ${TYPE_LABEL[d.type].toLowerCase()}` : 'News'} · <time datetime={isoDate(d.date)}>{fmtDate(d.date)}</time></p>
+        <h1 style="font-size:var(--step-4)">{d.title}</h1>
+        {d.summary && <p class="lead">{d.summary}</p>}
+        {ev && (
+          <dl class="ev-box">
+            <div><dt>When</dt><dd>{fmtDate(d.date, fmtLong)}{d.end_date && ` to ${fmtDate(d.end_date, fmtLong)}`}{d.time && `, ${d.time} Cyprus time`}</dd></div>
+            {d.location && <div><dt>Where</dt><dd>{d.location}</dd></div>}
+            {d.format && <div><dt>Format</dt><dd>{d.format === 'in-person' ? 'In person' : d.format === 'online' ? 'Online' : 'Hybrid (in person and online)'}</dd></div>}
+            {d.materials.length > 0 && <div><dt>Materials</dt><dd>{d.materials.map((m) => <a href={m.file} style="margin-right:16px">{m.label}</a>)}</dd></div>}
+            {!past && d.registration_url && <div class="ev-cta"><a class="btn" href={d.registration_url} rel="noopener">Register <span class="arrow" aria-hidden="true">→</span></a></div>}
+          </dl>
+        )}
+      </div>
+    </header>
+    {d.cover && (
+      <div class="wrap" style="max-width:1040px">
+        <Picture src={d.cover} alt={d.cover_alt ?? ''} widths={[640, 1024, 1600]} sizes="(max-width: 1040px) 100vw, 1040px" formats={['avif', 'webp']}
+          loading="eager" fetchpriority="high" style={`width:100%;view-transition-name: news-${post.id}`} />
+      </div>
+    )}
+    <div class="wrap-narrow prose section-tight">
+      <Content />
+      {d.social_url && <p><a class="btn btn-ghost" href={d.social_url} rel="noopener">See the post on social media <span class="arrow" aria-hidden="true">→</span></a></p>}
+    </div>
+  </article>
+  {more.length > 0 && (
+    <section class="section-tight" style="background:var(--surface-2)">
+      <div class="wrap"><h2 style="font-size:var(--step-3)">More news &amp; events</h2><div class="index">{more.map((p) => <NewsRow post={p} />)}</div></div>
+    </section>
+  )}
+</Base>

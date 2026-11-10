@@ -1,10 +1,16 @@
 // Decap CMS GitHub OAuth — step 2: exchange the code for a token and hand it
 // back to the CMS window. Runs as a Cloudflare Pages Function at /api/callback
 // Requires env vars: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET
+// Only these origins may receive the sign-in token (stops other sites from opening this popup to grab it).
+const ALLOWED = ['https://www.biolandcy.eu', 'https://biolandcy.eu'];
+const PREVIEW = /^https:\/\/[a-z0-9-]+\.bioland-cy-website\.pages\.dev$/;
 function renderBody(status, content) {
     const html = `
     <script>
+      const ALLOWED = ${JSON.stringify(ALLOWED)};
+      const PREVIEW = ${PREVIEW};
       const receiveMessage = (message) => {
+        if (!ALLOWED.includes(message.origin) && !PREVIEW.test(message.origin)) return;
         window.opener.postMessage(
           'authorization:github:${status}:${JSON.stringify(content)}',
           message.origin

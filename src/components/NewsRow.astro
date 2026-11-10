@@ -1,0 +1,29 @@
+---
+// One entry in the News & events list: a news post, an event or a workshop.
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { fmtDate, isoDate, isEvent, isPast, TYPE_LABEL } from '../lib/content';
+import { IMG } from '../data/images';
+interface Props { post: CollectionEntry<'news'>; headingLevel?: 'h2' | 'h3' }
+const { post, headingLevel = 'h3' } = Astro.props;
+const H = headingLevel;
+const d = post.data;
+const ev = isEvent(post);
+const when = ev ? (isPast(post) ? 'Past' : 'Upcoming') : '';
+---
+<article class:list={['irow', ev && 'is-event']}>
+  <p class="meta">
+    <span class:list={['tag', ev && 'tag-event']}>{when && `${when} · `}{TYPE_LABEL[d.type]}</span><br />
+    <time datetime={isoDate(d.date)}>{fmtDate(d.date, { day: '2-digit', month: 'short', year: 'numeric' })}</time>
+    {ev && d.time && <><br />{d.time} Cyprus time</>}
+  </p>
+  <div>
+    <H><a href={`/news/${post.id}`}>{d.title}</a></H>
+    {ev && (d.location || d.format) && <p class="ev-where">{[d.location, d.format].filter(Boolean).join(' · ')}</p>}
+    {d.summary && <p>{d.summary}</p>}
+  </div>
+  <div class="thumb">
+    <Picture src={d.cover ?? IMG.hero.src} alt="" widths={[300, 500]} sizes="(max-width: 860px) 90vw, 220px" formats={['avif', 'webp']}
+      loading="lazy" style={`view-transition-name: news-${post.id}`} />
+  </div>
+</article>

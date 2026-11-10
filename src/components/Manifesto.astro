@@ -1,0 +1,7 @@
+---
+interface Props { text: string; lit?: string; tag?: 'p' | 'h2' }
+const { text, lit, tag = 'p' } = Astro.props;
+const Tag = tag;
+const words = text.split(' ');
+---
+<Tag class="manifesto">{words.map((w, i) => <span style={`--i:${i}`}>{w}{i < words.length - 1 ? ' ' : ''}</span>)}</Tag>

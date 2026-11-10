@@ -1,0 +1,162 @@
+# =====================================================================
+# BIOLAND-Cy editor (Sveltia CMS) — https://biolandcy.eu/admin/
+# Sign in with GitHub. Every Save is a commit; Cloudflare rebuilds the
+# site in about a minute. Fields match src/content.config.ts.
+# =====================================================================
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+backend:
+  name: github
+  repo: ecoemardini/bioland-cy-website
+  branch: v2                         # the branch the live site is built from (since the Nov 2026 switch)
+  base_url: https://biolandcy.eu     # the sign-in functions in /functions/api
+  auth_endpoint: api/login
+  commit_messages:
+    create: 'Add {{collection}} “{{slug}}” (via editor)'
+    update: 'Update {{collection}} “{{slug}}” (via editor)'
+    delete: 'Delete {{collection}} “{{slug}}” (via editor)'
+    uploadMedia: 'Upload “{{path}}” (via editor)'
+    deleteMedia: 'Delete “{{path}}” (via editor)'
+
+site_url: https://biolandcy.eu
+display_url: https://biolandcy.eu
+logo:
+  src: /favicon.svg
+publish_mode: simple
+media_folder: public/images
+public_folder: /images
+media_libraries:
+  default:
+    config:
+      max_file_size: 15000000
+      slugify_filename: true
+      transformations:
+        raster_image: { format: webp, quality: 85, width: 2400, height: 2400 }
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  # ------------------------------------------------------------- NEWS & EVENTS
+  # One section for news posts, events and workshops (coordinator, 10 Nov 2026).
+  - name: news
+    label: News & events
+    label_singular: News post or event
+    description: >-
+      Choose the type first. News posts show their date as the publication date. For an event or workshop,
+      the date is the day it takes place: it is listed under "Coming up" until then and moves to the list afterwards.
+      Fill the event details only for events and workshops.
+    icon: newspaper
+    folder: src/content/news
+    path: '{{slug}}/index'
+    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    sortable_fields: { fields: [date, title, type], default: { field: date, direction: descending } }
+    view_filters:
+      - { label: News, field: type, pattern: news }
+      - { label: Events, field: type, pattern: event }
+      - { label: Workshops, field: type, pattern: workshop }
+    summary: '{{date | date("YYYY-MM-DD")}} · {{type}} · {{title}}'
+    fields:
+      - { name: type, label: Type, widget: select, default: news, options: [{ label: News post, value: news }, { label: Event, value: event }, { label: Workshop, value: workshop }] }
+      - { name: title, label: Title, widget: string }
+      - { name: date, label: 'Date (for events: the day it takes place)', widget: datetime, time_format: false, format: 'YYYY-MM-DD' }
+      - { name: summary, label: 'Summary (1–2 sentences, shown in lists)', widget: text, required: false }
+      - { name: cover, label: 'Picture (landscape works best)', widget: image, required: false }
+      - { name: cover_alt, label: 'Picture description (for blind readers)', widget: string, required: false }
+      - { name: time, label: 'Events only: start time (Cyprus time, e.g. 10:00)', widget: string, required: false, pattern: ['^\d{1,2}:\d{2}$', 'Use HH:MM, e.g. 10:00'] }
+      - { name: end_date, label: 'Events only: end date (if longer than one day)', widget: datetime, time_format: false, format: 'YYYY-MM-DD', required: false }
+      - { name: location, label: 'Events only: place', widget: string, required: false }
+      - { name: format, label: 'Events only: format', widget: select, options: [in-person, online, hybrid], required: false }
+      - { name: registration_url, label: 'Events only: registration link', widget: string, required: false, pattern: ['^https://', 'Start with https://'] }
+      - name: materials
+        label: 'Events only: materials to download (slides, reports)'
+        widget: list
+        required: false
+        fields:
+          - { name: label, label: Label, widget: string }
+          - { name: file, label: File, widget: file, media_folder: /public/files/events, public_folder: /files/events }
+      - { name: social_url, label: 'Link to the social media post (optional)', widget: string, required: false, pattern: ['^https://', 'Start with https://'] }
+      - { name: draft, label: 'Draft (hide from the website)', widget: boolean, default: false }
+      - { name: body, label: Text, widget: markdown, required: false }
+
+  # ------------------------------------------------------------- DELIVERABLES
+  - name: deliverables
+    label: Deliverables
+    label_singular: Deliverable
+    description: Set the status and upload the public PDF (or add the DOI). Public items appear under Outputs.
+    icon: description
+    folder: src/content/deliverables
+    format: json
+    identifier_field: code
+    slug: '{{code}}'
+    media_folder: /public/files/deliverables
+    public_folder: /files/deliverables
+    create: true
+    summary: '{{code}} · {{title}} · {{status}}'
+    sortable_fields: [code, due_month, status]
+    fields:
+      - { name: code, label: 'Code (e.g. D2.1)', widget: string, pattern: ['^D\d+\.\d+$', 'Use the form D2.1'] }
+      - { name: title, label: Title, widget: string }
+      - { name: summary, label: One-line description, widget: string, required: false }
+      - { name: wp, label: Work package, widget: select, options: [WP1, WP2, WP3, WP4, WP5] }
+      - { name: due_month, label: 'Due month (M1 = July 2026)', widget: number, value_type: int, min: 1, max: 36 }
+      - { name: status, label: Status, widget: select, default: planned, options: [{ label: Planned, value: planned }, { label: In progress, value: in-progress }, { label: Submitted, value: submitted }, { label: Published, value: published }] }
+      - { name: public, label: Public deliverable, widget: boolean, default: true }
+      - { name: pdf, label: Public PDF, widget: file, required: false }
+      - { name: doi, label: DOI or Zenodo link, widget: string, required: false }
+
+  # ------------------------------------------------------------- TEAM
+  - name: team
+    label: Team
+    label_singular: Team member
+    icon: badge
+    folder: src/content/team
+    format: json
+    identifier_field: name
+    slug: '{{name}}'
+    media_folder: ''
+    public_folder: ''
+    create: true
+    sortable_fields: [order, name]
+    fields:
+      - { name: name, label: Name, widget: string }
+      - { name: role, label: Role, widget: string }
+      - { name: order, label: Order on the page, widget: number, value_type: int, default: 10 }
+      - { name: photo, label: 'Photo (square, optional)', widget: image, required: false }
+      - { name: bio, label: Short bio, widget: text, required: false }
+      - { name: email, label: E-mail, widget: string, required: false }
+      - { name: orcid, label: 'ORCID iD (e.g. 0000-0002-1825-0097)', widget: string, required: false }
+      - { name: linkedin, label: LinkedIn profile, widget: string, required: false, pattern: ['^https://', 'Start with https://'] }
+
+  # ------------------------------------------------------------- SITE SETTINGS
+  - name: settings
+    label: Site settings
+    icon: settings
+    files:
+      - name: site
+        label: Texts, links and funding
+        file: src/data/site.json
+        format: json
+        fields:
+          - { name: title, label: Site name, widget: string }
+          - { name: long_title, label: Full project title, widget: string }
+          - { name: description, label: Description for search engines, widget: text }
+          - { name: hero_title, label: Home page headline, widget: string }
+          - { name: hero_lead, label: Home page introduction, widget: text }
+          - { name: project_code, label: Project code, widget: string }
+          - { name: start, label: Start date, widget: datetime, time_format: false, format: 'YYYY-MM-DD' }
+          - { name: end, label: End date, widget: datetime, time_format: false, format: 'YYYY-MM-DD' }
+          - { name: contact_email, label: Contact e-mail, widget: string }
+          - { name: address, label: Address, widget: string }
+          - { name: newsletter_text, label: Newsletter text, widget: text }
+          - { name: footer_text, label: Footer text (next to the links), widget: text }
+          - name: social
+            label: Social media links (leave empty to hide)
+            widget: object
+            fields:
+              - { name: instagram, label: Instagram, widget: string, required: false }
+              - { name: linkedin, label: LinkedIn, widget: string, required: false }
+              - { name: facebook, label: Facebook, widget: string, required: false }
+          - { name: funding_en, label: 'Funding statement (English, do not shorten)', widget: text }
+          - { name: funding_el, label: Funding statement (Greek), widget: text }

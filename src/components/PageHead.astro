@@ -1,0 +1,18 @@
+---
+// Page header: mono eyebrow, large title, lead, and an instrument strip with the project clock.
+import { currentMonth } from '../lib/content';
+interface Props { eyebrow?: string; n?: string; title: string; lead?: string; dark?: boolean }
+const { eyebrow, n, title, lead, dark = false } = Astro.props;
+const m = Math.max(1, Math.min(24, currentMonth()));
+---
+<header class:list={['page-head', dark && 'on-dark graticule']}>
+  <div class="wrap">
+    {eyebrow && <p class="eyebrow">{n && <span class="n">{n}</span>}{eyebrow}</p>}
+    <div class="sec-head" style="margin-bottom:0;align-items:end">
+      <h1 style={dark ? 'color:#fff' : undefined}>{title}</h1>
+      {lead && <p class="lead" style="margin:0">{lead}</p>}
+    </div>
+    <slot />
+    <p class="ph-strip mono"><span>BIOLAND-Cy</span><span>EXCELLENCE/0925/0163</span><span data-pm>Project month {m} / 24</span><span class="hide-s">Cyprus · 34.6–35.7°N · 32.3–34.6°E</span></p>
+  </div>
+</header>

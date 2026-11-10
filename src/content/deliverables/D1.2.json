@@ -1,0 +1,9 @@
+{
+  "code": "D1.2",
+  "title": "Data Management Plan",
+  "wp": "WP1",
+  "due_month": 6,
+  "status": "in-progress",
+  "summary": "FAIR data handling, licensing and repositories.",
+  "public": false
+}

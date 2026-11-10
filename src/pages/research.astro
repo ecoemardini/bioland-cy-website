@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Figure from '../components/Figure.astro';
+import { IMG, LAYERS } from '../data/images';
+import { getDeliverables, WPS, STATUS } from '../lib/content';
+const deliverables = await getDeliverables();
+---
+<Base title="Research" description="How BIOLAND-Cy reads the ancient Cypriot landscape: Copernicus Earth Observation, published bioarchaeological evidence, and two indices that bring them together.">
+  <PageHead eyebrow="Research" n="§01" title="How we read the past from orbit"
+    lead="Satellites cannot photograph the past. But they can map the slow-changing frame of the land, and published evidence from bones, seeds and isotopes tells us how people used it. BIOLAND-Cy brings the two together." dark>
+  </PageHead>
+
+  <section class="on-dark" style="padding-bottom:clamp(48px,7vw,96px)">
+    <div class="wrap"><Figure pic={IMG.eo3d1} ratio="16 / 7" sizes="(max-width: 1240px) 100vw, 1240px" widths={[640, 1024, 1600, 2200]} priority /></div>
+  </section>
+
+  <section class="section" id="method" aria-labelledby="m-h">
+    <div class="wrap">
+      <p class="eyebrow">Method</p>
+      <h2 id="m-h">Three steps, every time</h2>
+      <div class="grid g3" style="margin-top:28px">
+        <article class="card"><span class="stat">1</span><h3 style="margin-top:10px">Map what lasts</h3><p class="muted">Cyprus's plant cover has changed greatly since the first farmers: forests were cleared, burnt and grazed, and new crops and trees arrived. The frame of the land changes far more slowly: hills and valleys, rivers and springs, many soils. Copernicus satellites map this frame today, and the seasonal green shows where water and growth potential lie now, not what grew then.</p></article>
+        <article class="card"><span class="stat">2</span><h3 style="margin-top:10px">Set aside what is new</h3><p class="muted">Towns, dams and reservoirs, main roads and pumped irrigation are mostly modern, so we mask them out and compare results with and without the mask. What remains suggests what the land could offer: water, fertile soil and pasture, and the effort needed to reach them on foot.</p></article>
+        <article class="card"><span class="stat">3</span><h3 style="margin-top:10px">Test against the evidence</h3><p class="muted">We compare the maps with dated evidence from published sites and cores: bones, teeth, seeds, charcoal, pollen and isotopes that show what people ate, which animals they kept, how far they moved and how climate and vegetation changed. Where past conditions differed, we say so and show how much the results could change.</p></article>
+      </div>
+      <p class="small muted" style="margin-top:24px;max-width:90ch">Technical note: Sentinel-2 NDVI time series are read as indicators of present-day moisture and growth potential, not of past vegetation. With the Copernicus DEM (slope, hydrology) and Sentinel-1 coherence they feed a Resource Accessibility Index and an Activity Index, bracketed with palaeoclimate scenarios and tested against dated pollen, charcoal, archaeobotanical, zooarchaeological, osteological and stable-isotope (δ¹³C, δ¹⁵N, δ¹⁸O) data.</p>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--surface-2)" aria-labelledby="eo-h">
+    <div class="wrap">
+      <p class="eyebrow">Earth Observation</p>
+      <h2 id="eo-h">Six layers of open satellite data</h2>
+      <p class="lead">All from the European Union's Copernicus programme and other open sources, for the whole island.</p>
+      <div class="grid g3" style="margin-top:28px">
+        {LAYERS.map((l) => (
+          <article class="card" style="padding:0;overflow:hidden">
+            <div style="background:var(--night);padding:18px"><Image src={l.src} alt={`${l.label}: map of the whole island of Cyprus`} widths={[400, 700]} sizes="(max-width: 640px) 100vw, 33vw" formats={['webp']} loading="lazy" /></div>
+            <div style="padding:20px 22px 24px"><h3>{l.label}</h3><p class="muted" style="margin:0">{l.data}</p></div>
+          </article>
+        ))}
+      </div>
+      <div class="grid g2" style="margin-top:clamp(28px,4vw,48px)">
+        <Figure pic={IMG.seasons} ratio="16 / 7" credit />
+        <Figure pic={IMG.radar} ratio="16 / 7" credit />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bio-h">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Bioarchaeology</p>
+        <h2 id="bio-h">Evidence that already exists</h2>
+        <p class="lead">Excavations across Cyprus have already published human and animal bones, charred seeds and isotope results. BIOLAND-Cy collects these data from many sites and periods into one harmonised, georeferenced database, with every source credited.</p>
+        <ul class="prose" style="padding-left:1.1em">
+          <li><strong>Human bones and teeth:</strong> age, health and diet of people from published burials.</li>
+          <li><strong>Animal bones:</strong> sheep, goat, cattle, pig, deer and mouflon: herding, hunting and feasting.</li>
+          <li><strong>Plant remains:</strong> charred seeds and grains: which crops were grown, stored and cooked.</li>
+          <li><strong>Isotopes:</strong> carbon and nitrogen indicate diet; strontium and oxygen indicate whether people grew up locally.</li>
+        </ul>
+        <p class="muted">No new excavation and no new sampling: the project reuses published, peer-reviewed evidence.</p>
+      </div>
+      <div class="grid g2">
+        <Figure pic={IMG.deer} ratio="4 / 5" sizes="(max-width: 900px) 50vw, 25vw" />
+        <Figure pic={IMG.carob} ratio="4 / 5" sizes="(max-width: 900px) 50vw, 25vw" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section on-dark" aria-labelledby="idx-h">
+    <div class="wrap">
+      <p class="eyebrow">Integration</p>
+      <h2 id="idx-h" style="color:#fff">Two indices, one open GeoHub</h2>
+      <div class="grid g2" style="margin-top:28px">
+        <article class="card" style="background:var(--night-2);border-color:#2a3550;color:#dfe6f1"><h3 style="color:#fff">Resource Accessibility Index</h3><p style="color:#c9d2e1">Where water, fertile soil and pasture lay within reach, and how much effort it took to get there on foot: built from vegetation baselines, terrain and hydrology.</p></article>
+        <article class="card" style="background:var(--night-2);border-color:#2a3550;color:#dfe6f1"><h3 style="color:#fff">Activity Index</h3><p style="color:#c9d2e1">How communities may have moved through the landscape and the seasons: terrain and radar-based mobility and activity modelling, tested against the evidence.</p></article>
+      </div>
+      <p class="lead" style="color:#c9d2e1;margin-top:28px">Both come together in the BIOLAND GeoHub, an open QGIS environment with at least five thematic map layers, for research, heritage management and teaching.</p>
+    </div>
+  </section>
+
+  <section class="section" id="work-packages" aria-labelledby="wp-h">
+    <div class="wrap">
+      <p class="eyebrow">Structure</p>
+      <h2 id="wp-h">Five work packages</h2>
+      <div style="margin-top:28px;border-top:1px solid var(--text)">
+        {WPS.map((w) => (
+          <details class="wp" open={w.id === 'WP3'}>
+            <summary>
+              <span class="tag">{w.id}</span>
+              <strong style="font:700 var(--step-2)/1.15 var(--font-display);letter-spacing:-.025em">{w.title}</strong>
+              <span class="mono muted">{w.months}</span>
+            </summary>
+            <div class="body">
+              <p class="muted" style="margin:0 0 14px">{w.text}</p>
+              <ul style="margin:0;padding:0;list-style:none">
+                {deliverables.filter((d) => d.data.wp === w.id).map((d) => (
+                  <li style="display:grid;grid-template-columns:70px 1fr auto;gap:14px;padding:10px 0;border-top:1px solid var(--line)"><span class="mono">{d.data.code}</span><span>{d.data.title} <span class="muted small">· M{d.data.due_month}</span></span><span class:list={['tag', d.data.status]}>{STATUS[d.data.status]}</span></li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        ))}
+      </div>
+      <p style="margin-top:24px"><a class="textlink" href="/outputs">Deliverables, data and code <span aria-hidden="true">→</span></a></p>
+    </div>
+  </section>
+</Base>

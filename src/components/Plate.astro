@@ -1,0 +1,26 @@
+---
+// Gallery figure for the home page: the whole picture at its own proportions (never cropped), and the mandatory caption
+// ("AI-generated image: …" for AI pictures). Styled as .plate in src/styles/orbit.css; the row height is set there (--ph).
+import { Picture } from 'astro:assets';
+import type { Pic } from '../data/images';
+interface Props { pic: Pic; no?: string; kind?: string; class?: string; eager?: boolean }
+const { pic, no, kind, class: cls = '', eager = false } = Astro.props;
+const r = pic.src.width / pic.src.height;
+// sharp at 2x pixel density for a 480 px tall row; never wider than the source file
+const widths = [500, 800, 1100, 1500, 2000].filter((w) => w <= pic.src.width).concat(pic.src.width < 2000 ? [pic.src.width] : []);
+const sizes = `(max-width: 700px) ${Math.round(Math.min(345, 300 * r))}px, ${Math.round(480 * r)}px`;
+const tail = [pic.recon ? 'Reconstruction based on published evidence' : '', pic.people ? 'the people are fictional' : ''].filter(Boolean).join('; ');
+---
+<figure class:list={['plate', cls]} data-kind={kind} style={`--r:${r.toFixed(4)}`}>
+  <div class="plate-ph">
+    <Picture src={pic.src} alt={pic.alt} widths={[...new Set(widths)]} sizes={sizes} formats={['avif', 'webp']} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  </div>
+  <figcaption>
+    {no && <span class="plate-no">{no}</span>}
+    <span>
+      {pic.ai
+        ? <><b>AI-generated image:</b> {pic.caption}.{tail && ` ${tail.charAt(0).toUpperCase() + tail.slice(1)}.`}</>
+        : <><b>Real data:</b> {pic.caption}</>}
+    </span>
+  </figcaption>
+</figure>

@@ -1,0 +1,9 @@
+# Old addresses from the 2026 single-page site
+/workpackages          /research#work-packages 301
+/work-packages         /research#work-packages 301
+/data                  /outputs         301
+/deliverables          /outputs         301
+
+# News and events merged into one page (10 Nov 2026)
+/events                /news            301
+/events.html           /news            301

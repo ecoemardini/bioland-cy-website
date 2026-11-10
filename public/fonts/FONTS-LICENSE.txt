@@ -1,0 +1,6 @@
+Fonts in this folder (variable WOFF2, subsets used by the site):
+- Montserrat (Julieta Ulanovsky and contributors)
+- Open Sans (Steve Matteson)
+- JetBrains Mono (JetBrains)
+All licensed under the SIL Open Font License 1.1: https://openfontlicense.org
+Files taken from Fontsource (fontsource.org).

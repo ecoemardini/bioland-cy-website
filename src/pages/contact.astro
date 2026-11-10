@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Newsletter from '../components/Newsletter.astro';
+import site from '../data/site.json';
+const social = Object.entries(site.social).filter(([, u]) => u);
+const names: Record<string, string> = { instagram: 'Instagram', linkedin: 'LinkedIn', facebook: 'Facebook' };
+---
+<Base title="Contact" description="Write to the BIOLAND-Cy team at the ERATOSTHENES Centre of Excellence, or subscribe to the newsletter.">
+  <PageHead eyebrow="Contact" n="§06" title="Get in touch" lead="Questions about the research, the data or a collaboration? Write to the project coordinator." />
+  <section class="section-tight" style="padding-top:0">
+    <div class="wrap split" style="align-items:start">
+      <form action={`https://formsubmit.co/${site.contact_email}`} method="post" data-contact>
+        <h2 style="font-size:var(--step-2)">Send a message</h2>
+        <input type="hidden" name="_subject" value="BIOLAND-Cy website message" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_next" value="https://biolandcy.eu/contact?sent=1#sent" />
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" autocomplete="name" required /></div>
+        <div class="field"><label for="c-email">E-mail</label><input class="input" id="c-email" name="email" type="email" autocomplete="email" required /></div>
+        <div class="field"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" rows="6" required></textarea></div>
+        <button class="btn" type="submit">Send message</button>
+        <p class="form-note" style="margin-top:12px">Your message goes to the project coordinator by e-mail through the FormSubmit service. We use your details only to reply; see the <a href="/privacy#contact">privacy policy</a>.</p>
+        <p id="sent" class="form-msg" role="status" hidden>Thank you. Your message has been sent.</p>
+      </form>
+      <div class="grid" style="gap:16px">
+        <div class="card">
+          <h2 style="font-size:var(--step-1)">Project coordinator</h2>
+          <p style="margin:0">Dr Mahmoud Mardini<br />ERATOSTHENES Centre of Excellence<br />Limassol, Cyprus<br /><a href={`mailto:${site.contact_email}`}>{site.contact_email}</a></p>
+        </div>
+        {social.length > 0 && (
+          <div class="card">
+            <h2 style="font-size:var(--step-1)">Follow BIOLAND-Cy</h2>
+            <p class="btn-row" style="margin:0">{social.map(([k, u]) => <a class="chip-link" href={u} rel="me noopener">{names[k] ?? k}</a>)}</p>
+          </div>
+        )}
+        <div class="card">
+          <h2 style="font-size:var(--step-1)">Press and media</h2>
+          <p style="margin:0" class="muted">Logos, images with credits and project facts are available on request from the coordinator.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section"><div class="wrap"><Newsletter /></div></section>
+  <script>
+    if (new URLSearchParams(location.search).get('sent') === '1') { const m = document.getElementById('sent'); if (m) m.hidden = false; }
+  </script>
+</Base>
