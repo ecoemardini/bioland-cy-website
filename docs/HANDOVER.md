@@ -10,7 +10,7 @@ Claude Code loads automatically; this file is the full background. Keep section 
 
 | Item | State |
 |---|---|
-| Live website | **v1**, a plain HTML site with Decap CMS, live at https://biolandcy.eu since 2 July 2026. Source: `D2.2_Website_Social_Media/site/`. GitHub `ecoemardini/bioland-cy-website`, branch `main`. |
+| Live website | **v2** (this site) live at https://biolandcy.eu since 10 Nov 2026, built by Cloudflare Pages project `bioland-cy-website` from branch `v2`. The old v1 (plain HTML + Decap CMS, branch `main`, source `D2.2_Website_Social_Media/site/`) is kept for rollback. |
 | Redesign | **v2 "From orbit to ground"** (Astro 7 + Sveltia CMS), complete and tested, **not yet live**. Source: `D2.2_Website_Social_Media/site_v2/` (this folder). A built copy is in `Website_v2_redesign/site_v2_preview_build/`. |
 | Other designs | Ten more directions (B to I, C2, E2) were built as prototypes with only a home page and a News page. v2 is "Option A" in that set. **No option has been chosen yet** (see 8.1). |
 | Deliverable | D2.2 "Project Website and Social Media Channels" (WP2, public, due M3). Plan: `BIOLAND-Cy_D2.2_Website_Social_Media.md` in the D2.2 folder. |

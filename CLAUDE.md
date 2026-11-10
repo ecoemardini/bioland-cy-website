@@ -34,7 +34,7 @@ npm run check    # astro check (installs @astrojs/check + typescript on first ru
 11. Never commit secrets (`.dev.vars`, tokens, client secrets, any `passwords.txt`).
 
 ## Workflow
-- Do not push to or merge into `main` (the live site) or the production branch without the coordinator's explicit OK. Work on a branch and open a pull request.
+- The live site is built from branch **`v2`** (production branch since 10 Nov 2026); `main` holds the old 2026 site and is no longer published. Every push to `v2` goes live within about 3 minutes, and so does every Save in /admin. Do not push to `v2` without the coordinator's explicit OK. Work on another branch (Cloudflare builds a preview for it) and open a pull request.
 - Before you finish a task: `npm run build`, check the changed pages at 390 px and 1440 px, and list what changed.
 - Content edits normally happen in `/admin`. Change code only for structure, design or fixes.
 - When an item in `docs/HANDOVER.md` section 8 is done, update that section in the same commit.
