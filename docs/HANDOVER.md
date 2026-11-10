@@ -97,7 +97,7 @@ Do not keep editing both copies.
 
 | Path | What it is |
 |---|---|
-| `src/pages/` | Home, research, outputs, news & events (list plus `[slug]`), about, contact, privacy, accessibility, 404. Build format `file`, so pages are `/about.html` served as `/about`. |
+| `src/pages/` | Home, research & objectives (project summary, aims, six objectives, method, work packages), outputs, news & events (list plus `[slug]`), about & team (team, host, funding, image credits), contact, privacy, accessibility, 404. Build format `file`, so pages are `/about.html` served as `/about`. |
 | `src/content/` | Everything editors change, one file per item: `news/<date-slug>/index.md` (images next to it) holds news **and events/workshops** (field `type`; merged into one "News & events" section and page on 10 Nov 2026; `/events` redirects to `/news`), `deliverables/D*.json`, `team/*.json` |
 | `src/content.config.ts` | Zod schemas for the collections. **Must match `public/admin/config.yml`** field for field. |
 | `src/data/site.json` | Site texts: hero, description, contact, social links, **funding statements (EN and EL)**. Editable in /admin, Site settings. |

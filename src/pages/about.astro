@@ -8,66 +8,11 @@ import { IMG, COPERNICUS } from '../data/images';
 import site from '../data/site.json';
 const team = (await getCollection('team')).sort((a, b) => a.data.order - b.data.order);
 const initials = (n: string) => n.replace(/^Dr\.?\s+/, '').split(/\s+/).map((w) => w[0]).slice(0, 2).join('');
-const objectives = [
-  ['Environmental baselines', 'Build Earth Observation baselines (NDVI, terrain, hydrology) for ancient Cypriot landscapes at 10–25 m resolution.'],
-  ['Resource Accessibility Index', 'Create an index linking environment to diet, validated with at least 120 published isotopic data points.'],
-  ['Integrated bioarchaeology', 'Harmonise published human, faunal and botanical data into one open spatial framework.'],
-  ['Activity modelling', 'Model movement and land use from terrain and Sentinel-1 radar coherence.'],
-  ['The BIOLAND GeoHub', 'Deliver a QGIS platform with five thematic map groups and FAIR documentation.'],
-  ['Open science', 'Publish FAIR datasets, open code and peer-reviewed papers, fully reproducible.'],
-];
 ---
-<Base title="About the project" description="BIOLAND-Cy, a 24-month research project of the ERATOSTHENES Centre of Excellence, co-funded by the European Union under THALIA 2021–2027 through the Research and Innovation Foundation.">
-  <PageHead eyebrow="About" n="§05" title="Satellites meet bioarchaeology" lead="Reading ancient Cypriot landscapes by linking Copernicus Earth Observation with the published record of bones, seeds and isotopes." />
+<Base title="About and team" description="The BIOLAND-Cy team, the ERATOSTHENES Centre of Excellence that runs the project, and its funding: co-funded by the European Union under THALIA 2021–2027 through the Research and Innovation Foundation.">
+  <PageHead eyebrow="About & team" n="§05" title="Who we are" lead="The people who run BIOLAND-Cy, the Centre that hosts it and how the project is funded." />
 
-  <section class="section-tight" style="padding-top:0" aria-labelledby="sum-h">
-    <div class="wrap split" style="align-items:start">
-      <div class="prose">
-        <h2 id="sum-h" class="visually-hidden">Project summary</h2>
-        <p class="lead" style="color:var(--text)">BIOLAND-Cy develops, for the first time in Cyprus, an interdisciplinary framework that links Earth Observation with already-published bioarchaeological evidence: human osteology, stable isotopes, zooarchaeology and archaeobotany.</p>
-        <p>The project does no new excavation and takes no new samples. It re-evaluates the published record against satellite-derived environmental baselines to ask how people lived in, fed from and moved through the ancient landscape.</p>
-        <h3>Aims</h3>
-        <p>To build open satellite baselines of vegetation, terrain, water and radar for the landscapes it studies, and to bring them into the same spatial frame as the published evidence for diet, herding and mobility.</p>
-        <h3>Expected results</h3>
-        <ul>
-          <li>A <strong>Resource Accessibility Index</strong> describing where subsistence resources were within reach.</li>
-          <li>An <strong>Activity Index</strong> modelling how the landscape was used and crossed.</li>
-          <li>The <strong>BIOLAND GeoHub</strong>, a QGIS-based platform with five thematic map groups, openly available to researchers and heritage managers.</li>
-          <li>Five FAIR datasets (CC BY 4.0, Zenodo), open code (MIT) and open-access papers.</li>
-        </ul>
-        <h3>Why it matters</h3>
-        <p>Bioarchaeological data from Cyprus have rarely been placed in a shared environmental and spatial context, and no earlier study has combined them systematically with landscape baselines from Earth Observation. BIOLAND-Cy bridges that gap. It strengthens the Centre's capacity in Earth Observation for cultural heritage, contributes to Cyprus's Smart Specialisation priority on satellite Earth Observation for monuments and cultural heritage, and supports UN SDG target 11.4 on safeguarding cultural heritage.</p>
-      </div>
-      <div>
-        <div class="card" id="funding" style="scroll-margin-top:calc(var(--header-h) + 24px)">
-          <p class="eyebrow">Funding</p>
-          <img src="/brand/funders/EN_Co-fundedbytheEU_RGB_POS.svg" alt="Co-funded by the European Union" width="260" height="58" style="height:58px;width:auto;margin-bottom:14px" />
-          <p>{site.funding_en}</p>
-          <p lang="el">{site.funding_el}</p>
-          <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0 0" class="small">
-            <dt class="muted">Project</dt><dd style="margin:0">{site.project_code}</dd>
-            <dt class="muted">Duration</dt><dd style="margin:0">24 months, 1 July 2026 – 30 June 2028</dd>
-            <dt class="muted">Implemented by</dt><dd style="margin:0">ERATOSTHENES Centre of Excellence, Limassol</dd>
-          </dl>
-        </div>
-        <Figure pic={IMG.satellite} ratio="4 / 3" class="" />
-      </div>
-    </div>
-  </section>
-
-  <section class="section" style="background:var(--surface-2)" aria-labelledby="obj-h">
-    <div class="wrap">
-      <p class="eyebrow">Objectives</p>
-      <h2 id="obj-h">Six key objectives</h2>
-      <ol class="numlist" style="margin-top:28px">
-        {objectives.map(([t, d], i) => (
-          <li class="reveal"><span class="no">OBJ-{String(i + 1).padStart(2, '0')}</span><h3>{t}</h3><p>{d}</p></li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="team-h">
+  <section class="section-tight" id="team" style="padding-top:0;scroll-margin-top:calc(var(--header-h) + 24px)" aria-labelledby="team-h">
     <div class="wrap">
       <p class="eyebrow">People</p>
       <h2 id="team-h">The team</h2>
@@ -86,6 +31,7 @@ const objectives = [
           </article>
         ))}
       </div>
+      <p style="margin-top:28px"><a class="textlink" href="/research">Research &amp; objectives <span aria-hidden="true">→</span></a></p>
     </div>
   </section>
 
@@ -101,7 +47,24 @@ const objectives = [
     </div>
   </section>
 
-  <section class="section" id="image-credits" aria-labelledby="cr-h">
+  <section class="section-tight" aria-labelledby="fund-h">
+    <div class="wrap-narrow">
+      <div class="card" id="funding" style="scroll-margin-top:calc(var(--header-h) + 24px)">
+        <p class="eyebrow">Funding</p>
+        <h2 id="fund-h" class="visually-hidden">Funding</h2>
+        <img src="/brand/funders/EN_Co-fundedbytheEU_RGB_NEG.svg" alt="Co-funded by the European Union" width="260" height="58" style="height:58px;width:auto;margin-bottom:14px" />
+        <p>{site.funding_en}</p>
+        <p lang="el">{site.funding_el}</p>
+        <dl style="display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:18px 0 0" class="small">
+          <dt class="muted">Project</dt><dd style="margin:0">{site.project_code}</dd>
+          <dt class="muted">Duration</dt><dd style="margin:0">24 months, 1 July 2026 – 30 June 2028</dd>
+          <dt class="muted">Implemented by</dt><dd style="margin:0">ERATOSTHENES Centre of Excellence, Limassol</dd>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="image-credits" style="background:var(--surface-2)" aria-labelledby="cr-h">
     <div class="wrap-narrow prose">
       <h2 id="cr-h" style="font-size:var(--step-3)">Image credits</h2>
       <p><strong>Satellite maps and 3D views</strong> are real data. {COPERNICUS} Sentinel-1 coherence: Kellndorfer et al. 2022, Global Seasonal Sentinel-1 Interferometric Coherence (CC BY 4.0). Lakes: JRC Global Surface Water. Maps and 3D views: BIOLAND-Cy / ERATOSTHENES Centre of Excellence.</p>

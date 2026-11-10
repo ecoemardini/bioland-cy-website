@@ -6,20 +6,66 @@ import Figure from '../components/Figure.astro';
 import { IMG, LAYERS } from '../data/images';
 import { getDeliverables, WPS, STATUS } from '../lib/content';
 const deliverables = await getDeliverables();
+const objectives = [
+  ['Environmental baselines', 'Build Earth Observation baselines (NDVI, terrain, hydrology) for ancient Cypriot landscapes at 10–25 m resolution.'],
+  ['Resource Accessibility Index', 'Create an index linking environment to diet, validated with at least 120 published isotopic data points.'],
+  ['Integrated bioarchaeology', 'Harmonise published human, faunal and botanical data into one open spatial framework.'],
+  ['Activity modelling', 'Model movement and land use from terrain and Sentinel-1 radar coherence.'],
+  ['The BIOLAND GeoHub', 'Deliver a QGIS platform with five thematic map groups and FAIR documentation.'],
+  ['Open science', 'Publish FAIR datasets, open code and peer-reviewed papers, fully reproducible.'],
+];
 ---
-<Base title="Research" description="How BIOLAND-Cy reads the ancient Cypriot landscape: Copernicus Earth Observation, published bioarchaeological evidence, and two indices that bring them together.">
-  <PageHead eyebrow="Research" n="§01" title="How we read the past from orbit"
-    lead="Satellites cannot photograph the past. But they can map the slow-changing frame of the land, and published evidence from bones, seeds and isotopes tells us how people used it. BIOLAND-Cy brings the two together." dark>
+<Base title="Research and objectives" description="What BIOLAND-Cy does and why: linking Copernicus Earth Observation with the published record of bones, seeds and isotopes. Project summary, aims, six objectives, method and work packages.">
+  <PageHead eyebrow="Research & objectives" n="§01" title="Satellites meet bioarchaeology"
+    lead="Reading ancient Cypriot landscapes by linking Copernicus Earth Observation with the published record of bones, seeds and isotopes." dark>
   </PageHead>
 
   <section class="on-dark" style="padding-bottom:clamp(48px,7vw,96px)">
     <div class="wrap"><Figure pic={IMG.eo3d1} ratio="16 / 7" sizes="(max-width: 1240px) 100vw, 1240px" widths={[640, 1024, 1600, 2200]} priority /></div>
   </section>
 
+  <section class="section" id="summary" aria-labelledby="sum-h">
+    <div class="wrap split" style="align-items:start">
+      <div class="prose">
+        <p class="eyebrow">The project</p>
+        <h2 id="sum-h">Project summary</h2>
+        <p class="lead" style="color:var(--text)">BIOLAND-Cy develops, for the first time in Cyprus, an interdisciplinary framework that links Earth Observation with already-published bioarchaeological evidence: human osteology, stable isotopes, zooarchaeology and archaeobotany.</p>
+        <p>The project does no new excavation and takes no new samples. It re-evaluates the published record against satellite-derived environmental baselines to ask how people lived in, fed from and moved through the ancient landscape.</p>
+        <h3>Aims</h3>
+        <p>To build open satellite baselines of vegetation, terrain, water and radar for the landscapes it studies, and to bring them into the same spatial frame as the published evidence for diet, herding and mobility.</p>
+        <h3>Expected results</h3>
+        <ul>
+          <li>A <strong>Resource Accessibility Index</strong> describing where subsistence resources were within reach.</li>
+          <li>An <strong>Activity Index</strong> modelling how the landscape was used and crossed.</li>
+          <li>The <strong>BIOLAND GeoHub</strong>, a QGIS-based platform with five thematic map groups, openly available to researchers and heritage managers.</li>
+          <li>Five FAIR datasets (CC BY 4.0, Zenodo), open code (MIT) and open-access papers.</li>
+        </ul>
+        <h3>Why it matters</h3>
+        <p>Bioarchaeological data from Cyprus have rarely been placed in a shared environmental and spatial context, and no earlier study has combined them systematically with landscape baselines from Earth Observation. BIOLAND-Cy bridges that gap. It strengthens the Centre's capacity in Earth Observation for cultural heritage, contributes to Cyprus's Smart Specialisation priority on satellite Earth Observation for monuments and cultural heritage, and supports UN SDG target 11.4 on safeguarding cultural heritage.</p>
+      </div>
+      <div>
+        <Figure pic={IMG.satellite} ratio="4 / 3" class="" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="objectives" style="background:var(--surface-2)" aria-labelledby="obj-h">
+    <div class="wrap">
+      <p class="eyebrow">Objectives</p>
+      <h2 id="obj-h">Six key objectives</h2>
+      <ol class="numlist" style="margin-top:28px">
+        {objectives.map(([t, d], i) => (
+          <li class="reveal"><span class="no">OBJ-{String(i + 1).padStart(2, '0')}</span><h3>{t}</h3><p>{d}</p></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
   <section class="section" id="method" aria-labelledby="m-h">
     <div class="wrap">
       <p class="eyebrow">Method</p>
-      <h2 id="m-h">Three steps, every time</h2>
+      <h2 id="m-h">How we read the past from orbit</h2>
+      <p class="lead">Satellites cannot photograph the past. But they can map the slow-changing frame of the land, and published evidence from bones, seeds and isotopes tells us how people used it. BIOLAND-Cy brings the two together in three steps.</p>
       <div class="grid g3" style="margin-top:28px">
         <article class="card"><span class="stat">1</span><h3 style="margin-top:10px">Map what lasts</h3><p class="muted">Cyprus's plant cover has changed greatly since the first farmers: forests were cleared, burnt and grazed, and new crops and trees arrived. The frame of the land changes far more slowly: hills and valleys, rivers and springs, many soils. Copernicus satellites map this frame today, and the seasonal green shows where water and growth potential lie now, not what grew then.</p></article>
         <article class="card"><span class="stat">2</span><h3 style="margin-top:10px">Set aside what is new</h3><p class="muted">Towns, dams and reservoirs, main roads and pumped irrigation are mostly modern, so we mask them out and compare results with and without the mask. What remains suggests what the land could offer: water, fertile soil and pasture, and the effort needed to reach them on foot.</p></article>

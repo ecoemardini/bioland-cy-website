@@ -10,7 +10,7 @@ if (btn && nav) {
   btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') { set(false); btn.focus(); } });
   nav.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
-  matchMedia('(min-width: 1021px)').addEventListener('change', () => set(false));
+  matchMedia('(min-width: 1200px)').addEventListener('change', () => set(false));
 }
 
 /* Header hides on scroll down and comes back on scroll up (never while the menu is open or focus is inside) */

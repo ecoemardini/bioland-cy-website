@@ -402,3 +402,15 @@ body.pa { --logo-h: 72px; }
 /* mid-size screens: menu + larger logo leave no room for the Newsletter pill (it stays in the footer and on Contact) */
 @media (min-width: 1021px) and (max-width: 1279px) { .pa .a-head .a-news-cta { display: none; } .pa .a-head nav { margin-left: auto; } }
 .pa form[data-contact] h2 { margin-bottom: 22px; }
+/* round 4 (10 Nov 2026): longer tab names ("Research & objectives", "About & team").
+   1021-1199px: Menu button, as on tablets. 1200-1535px: all tabs, no Newsletter pill (it stays in the footer and on Contact). */
+@media (min-width: 1021px) and (max-width: 1199px) {
+  .pa .a-menu { display: inline-flex; }
+  .pa .a-head .a-news-cta { display: inline-flex; margin-left: auto; padding: 11px 16px; }
+  .pa .a-head nav { display: none; position: absolute; top: 100%; left: var(--g); right: var(--g); margin: 0; }
+  .pa .a-head nav[data-open='true'] { display: block; }
+  .pa .a-head nav ul { flex-direction: column; border-radius: 22px; padding: 8px; background: var(--panel); backdrop-filter: none; box-shadow: 0 24px 60px rgb(0 0 0 / 0.6); }
+  .pa .a-head nav li a { padding: 16px 18px; font-size: 0.86rem; }
+}
+@media (min-width: 1200px) and (max-width: 1535px) { .pa .a-head .a-news-cta { display: none; } .pa .a-head nav { margin-left: auto; } }
+@media (min-width: 1200px) and (max-width: 1439px) { .pa .a-head li a { padding-inline: 12px; } }
